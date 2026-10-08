@@ -226,6 +226,24 @@
       background: rgba(239, 68, 68, 0.3) !important;
       border-color: var(--accent-red) !important;
     }
+
+    .type-toggle-btn {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid var(--card-border);
+      background: #090e1a;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      text-align: center;
+    }
+    .type-toggle-btn.active {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.1);
+    }
   </style>
 </head>
 <body>
@@ -264,9 +282,10 @@
       </button>
     </div>
 
-    <a href="https://t.me/" target="_blank" class="btn-telegram">
+    <!-- Official Telegram Link on Login -->
+    <a href="https://t.me/QUIZCROWN" target="_blank" class="btn-telegram">
       <i data-lucide="send" style="width: 16px; height: 16px;"></i>
-      24/7 Telegram Support
+      24/7 Telegram Support (@QUIZCROWN)
     </a>
   </div>
 
@@ -331,6 +350,7 @@
       </div>
     </div>
 
+    <!-- Mega Event Banner -->
     <div class="pro-card" style="border-color: rgba(245,158,11,0.4); background: #0c1424;">
       <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
         <span style="font-size: 11px; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.5px;">LIVE MEGA JACKPOT</span>
@@ -344,9 +364,21 @@
         PLAY 15 QUESTIONS JACKPOT
       </button>
     </div>
+
+    <!-- LIVE RANDOM WINNERS LIST IN LOBBY -->
+    <div class="pro-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span style="font-size: 13px; font-weight: 800; color: var(--accent-gold); display: flex; align-items: center; gap: 6px;">
+          <i data-lucide="trophy" style="width: 15px; height: 15px; color: var(--accent-gold);"></i>
+          RECENT JACKPOT WINNERS
+        </span>
+        <span style="font-size: 11px; color: var(--accent-green); font-weight: bold;">● LIVE UPDATING</span>
+      </div>
+      <div id="live-winners-list-container" style="display: flex; flex-direction: column; gap: 8px;"></div>
+    </div>
   </div>
 
-  <!-- SCREEN 4: QUIZ (15 QUESTIONS) -->
+  <!-- SCREEN 4: QUIZ -->
   <div id="screen-quiz" class="view-screen">
     <div style="background: #090e1a; height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 12px;">
       <div id="quiz-progress-bar" style="width: 6.6%; height: 100%; background: var(--accent-gold); transition: width 0.3s;"></div>
@@ -363,14 +395,14 @@
     <div id="quiz-options-wrapper" style="display: flex; flex-direction: column; gap: 9px;"></div>
   </div>
 
-  <!-- SCREEN 5: CONGRATULATIONS ₹50,000 -->
+  <!-- SCREEN 5: CONGRATULATIONS -->
   <div id="screen-congrats" class="view-screen" style="justify-content: center; text-align: center;">
     <div style="font-size: 52px; margin-bottom: 8px;">👑</div>
     <h2 style="font-size: 24px; font-weight: 900; color: var(--accent-gold); margin-bottom: 4px;">CONGRATULATIONS!</h2>
     <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 18px;">You answered all 15 questions correctly!</p>
 
     <div class="pro-card" style="text-align: center;">
-      <div style="font-size: 12px; color: var(--text-muted);">Jackpot Winning Balance</div>
+      <div style="font-size: 12px; color: var(--text-muted);">Total Winning Amount</div>
       <div style="font-size: 40px; font-weight: 900; color: var(--accent-green); margin: 6px 0;">₹50,000.00</div>
       <div style="font-size: 11px; color: #64748b;">Added to Withdrawable Cash Wallet</div>
     </div>
@@ -380,19 +412,41 @@
     </button>
   </div>
 
-  <!-- SCREEN 6: WALLET WITH BLANK UPI ID -->
+  <!-- SCREEN 6: WALLET WITH TOTAL WINNING AMOUNT & UPI/BANK FORM -->
   <div id="screen-wallet" class="view-screen">
     <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 12px;">My Wallet</h2>
 
     <div class="pro-card" style="background: linear-gradient(135deg, #102a43, #0b1a2e); border-color: #1e3a8a;">
-      <div style="font-size: 12px; color: #94a3b8;">Total Liquid Balance</div>
+      <div style="font-size: 12px; color: #94a3b8;">Total Winning Amount</div>
       <div id="wallet-main-display" style="font-size: 34px; font-weight: 900; color: var(--accent-green); margin: 6px 0;">₹0.00</div>
     </div>
 
     <div class="pro-card">
-      <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px;">WITHDRAW FUNDS</div>
-      <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px;">Enter Your UPI ID (Blank for User Input):</label>
-      <input type="text" id="user-withdrawal-upi" class="input-field" placeholder="e.g. yourname@okhdfcbank" value="">
+      <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px;">CHOOSE WITHDRAWAL METHOD</div>
+      
+      <!-- Method Toggle Buttons -->
+      <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+        <button id="toggle-method-upi" class="type-toggle-btn active" onclick="switchWithdrawMethod('UPI')">UPI ID</button>
+        <button id="toggle-method-bank" class="type-toggle-btn" onclick="switchWithdrawMethod('BANK')">Bank Account</button>
+      </div>
+
+      <!-- UPI Input Form -->
+      <div id="withdraw-upi-section">
+        <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px;">Your UPI ID:</label>
+        <input type="text" id="user-withdrawal-upi" class="input-field" placeholder="e.g. mobile@okhdfcbank" value="">
+      </div>
+
+      <!-- Bank Details Input Form -->
+      <div id="withdraw-bank-section" style="display: none;">
+        <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px;">Account Holder Name:</label>
+        <input type="text" id="bank-holder-name" class="input-field" placeholder="Full name as in passbook">
+        
+        <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px;">Bank Account Number:</label>
+        <input type="number" id="bank-acc-num" class="input-field" placeholder="Enter bank account number">
+
+        <label style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px;">Bank IFSC Code:</label>
+        <input type="text" id="bank-ifsc-code" class="input-field" placeholder="e.g. SBIN0001234">
+      </div>
 
       <button class="btn-gold" style="margin-top: 6px;" onclick="triggerWithdrawal()">
         <i data-lucide="arrow-up-right" style="width: 17px; height: 17px;"></i>
@@ -417,6 +471,10 @@
         <strong style="color: var(--accent-green);">₹50,000.00</strong>
       </div>
       <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+        <span style="color: var(--text-muted);">Payout Destination:</span>
+        <strong id="dest-display-summary" style="color: #fff;">--</strong>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
         <span style="color: var(--text-muted);">Security Verification:</span>
         <strong style="color: var(--accent-gold);">₹699.00</strong>
       </div>
@@ -493,7 +551,7 @@
     <button class="btn-gold" onclick="switchNav('screen-lobby')">RETURN TO LOBBY</button>
   </div>
 
-  <!-- SCREEN 11: USER PROFILE (MASKED MOBILE NUMBER) -->
+  <!-- SCREEN 11: USER PROFILE -->
   <div id="screen-profile" class="view-screen">
     <div class="pro-card" style="text-align: center; padding: 20px 14px;">
       <div style="display: inline-flex; width: 64px; height: 64px; border-radius: 50%; background: #1e293b; border: 2px solid var(--accent-gold); align-items: center; justify-content: center; margin-bottom: 8px;">
@@ -516,9 +574,10 @@
       </div>
     </div>
 
-    <a href="https://t.me/" target="_blank" class="btn-telegram">
+    <!-- Official Telegram Link in Profile -->
+    <a href="https://t.me/QUIZCROWN" target="_blank" class="btn-telegram">
       <i data-lucide="send" style="width: 16px; height: 16px;"></i>
-      Contact Us (Official Telegram Support)
+      Contact Us (Telegram: @QUIZCROWN)
     </a>
   </div>
 
@@ -545,8 +604,8 @@
 
   let userBalance = 0;
   let selectedLangCode = 'en';
+  let activeWithdrawMethod = 'UPI';
 
-  // Sound Synthesizer for Clapping / Applause Effect
   function playClapSound() {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -567,7 +626,35 @@
     } catch(e) {}
   }
 
-  // 8 Languages Multilingual Questions Database
+  const winnersList = [
+    { name: "Rahul S.", state: "Delhi", amount: "₹50,000", mode: "UPI" },
+    { name: "Pooja V.", state: "Maharashtra", amount: "₹50,000", mode: "Bank" },
+    { name: "Ankit K.", state: "Uttar Pradesh", amount: "₹50,000", mode: "UPI" },
+    { name: "Suresh M.", state: "Gujarat", amount: "₹50,000", mode: "Bank" },
+    { name: "Deepak R.", state: "Rajasthan", amount: "₹50,000", mode: "UPI" }
+  ];
+
+  function renderWinners() {
+    const container = document.getElementById('live-winners-list-container');
+    container.innerHTML = '';
+    winnersList.forEach(w => {
+      const div = document.createElement('div');
+      div.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#080d1a; padding:9px 12px; border-radius:10px; border:1px solid #1a2333; font-size:12px;";
+      div.innerHTML = `
+        <div>
+          <span style="font-weight:700; color:#fff;">${w.name}</span>
+          <span style="color:#64748b; font-size:11px;">(${w.state})</span>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-weight:800; color:var(--accent-green);">${w.amount}</span>
+          <span style="font-size:10px; color:var(--accent-gold); display:block;">Paid via ${w.mode}</span>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+  renderWinners();
+
   const multiLangQuestions = {
     en: [
       { q: "1. What is the capital of India?", win: 1000, opts: ["Mumbai", "New Delhi", "Kolkata", "Chennai"], ans: 1 },
@@ -648,7 +735,7 @@
       { q: "8. ప్రపంచంలో అత్యంత వేగంగా పరిగెత్తే జంతువు?", win: 17000, opts: ["చిరుతపులి", "సింహం", "గుర్రం", "జింక"], ans: 0 },
       { q: "9. తాజ్ మహల్ ఏ నగరంలో ఉంది?", win: 21000, opts: ["ఆగ్రా", "జైపూర్", "లక్నో", "ఢిల్లీ"], ans: 0 },
       { q: "10. ఇంటర్నెట్ పితామహుడు ఎవరు?", win: 26000, opts: ["వింట్ సెర్ఫ్", "చార్లెస్ బాబేజ్", "బిల్ గేట్స్", "స్టీవ్ జాబ్స్"], ans: 0 },
-      { q: "11. భారతదేశ జాతీయ పుష్పం ఏది?", win: 31000, opts: ["తామర (Lotus)", "గులాబీ", "బంతిపూవు", "సూర్యకాంతి"], ans: 0 },
+      { q: "11. భారతదేశ జాతీయ పుష్పం ఏది?", win: 31000, opts: ["తామర (Lotus)", "గులాబీ", "బంతిపూవు", "ಸೂರ್ಯಕಾಂತಿ"], ans: 0 },
       { q: "12. హవా మహల్ ఎక్కడ ఉంది?", win: 36000, opts: ["జైపూర్", "ఉదయపూర్", "జోధ్‌పూర్", "కోట"], ans: 0 },
       { q: "13. చంద్రుడిపై మొదట అడుగుపెట్టిన వ్యక్తి ఎవరు?", win: 41000, opts: ["నీల్ ఆర్మ్‌స్ట్రాంగ్", "రాకేష్ శర్మ", "బజ్ ఆల్డ్రిన్", "యూరి గగారిన్"], ans: 0 },
       { q: "14. 'వందేమాతరం' రచయిత ఎవరు?", win: 45500, opts: ["బంకించంద్ర ఛటర్జీ", "రవీంద్రనాథ్ ఠాగూర్", "ప్రేమ్‌చంద్", "కాళిదాసు"], ans: 0 },
@@ -730,7 +817,6 @@
       return;
     }
 
-    // Mask Mobile Number: 98****3210
     const maskedPhone = `${phone.substring(0, 2)}****${phone.substring(6, 10)}`;
     document.getElementById('lobby-username').innerText = `${maskedPhone} 👑`;
     document.getElementById('profile-display-phone').innerText = `+91 ${maskedPhone}`;
@@ -775,7 +861,6 @@
 
       btn.onclick = () => {
         if(optIdx === item.ans) {
-          // Correct Answer
           btn.classList.add('correct');
           playClapSound();
           userBalance = item.win;
@@ -790,7 +875,6 @@
             }
           }, 450);
         } else {
-          // Wrong Answer
           btn.classList.add('wrong');
           alert("Galat Jawab! Sahi vikalp chuniye aage badhne ke liye.");
         }
@@ -800,16 +884,48 @@
     });
   }
 
+  function switchWithdrawMethod(method) {
+    activeWithdrawMethod = method;
+    if(method === 'UPI') {
+      document.getElementById('toggle-method-upi').classList.add('active');
+      document.getElementById('toggle-method-bank').classList.remove('active');
+      document.getElementById('withdraw-upi-section').style.display = 'block';
+      document.getElementById('withdraw-bank-section').style.display = 'none';
+    } else {
+      document.getElementById('toggle-method-bank').classList.add('active');
+      document.getElementById('toggle-method-upi').classList.remove('active');
+      document.getElementById('withdraw-upi-section').style.display = 'none';
+      document.getElementById('withdraw-bank-section').style.display = 'block';
+    }
+  }
+
   function triggerWithdrawal() {
-    const enteredUPI = document.getElementById('user-withdrawal-upi').value.trim();
     if(userBalance <= 0) {
       alert("No withdrawable winnings found! Please play the quiz first.");
       return;
     }
-    if(!enteredUPI || !enteredUPI.includes('@')) {
-      alert("Kripya apni sahi UPI ID enter karein (e.g. name@okhdfcbank).");
-      return;
+
+    let summaryText = "";
+    if(activeWithdrawMethod === 'UPI') {
+      const upi = document.getElementById('user-withdrawal-upi').value.trim();
+      if(!upi || !upi.includes('@')) {
+        alert("Kripya apni sahi UPI ID enter karein (e.g. name@okhdfcbank).");
+        return;
+      }
+      summaryText = `UPI: ${upi}`;
+    } else {
+      const name = document.getElementById('bank-holder-name').value.trim();
+      const acc = document.getElementById('bank-acc-num').value.trim();
+      const ifsc = document.getElementById('bank-ifsc-code').value.trim();
+
+      if(!name || acc.length < 8 || ifsc.length < 5) {
+        alert("Kripya bank details poori aur sahi bharein (Name, Account No, IFSC).");
+        return;
+      }
+      summaryText = `Bank: A/C ending ${acc.slice(-4)} (${ifsc})`;
     }
+
+    document.getElementById('dest-display-summary').innerText = summaryText;
     switchNav('screen-lock-modal');
   }
 
