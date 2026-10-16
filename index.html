@@ -3,43 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CROREPATI VIP</title>
+  <title>कौन बनेगा करोड़पति - VIP Quiz</title>
+  <meta property="og:title" content="कौन बनेगा करोड़पति - 20 Questions ₹25,000 Jackpot">
+  <meta property="og:description" content="Kheliye 20 Questions aur jeetiye ₹25,000 direct bank ya UPI mein!">
+  <meta property="og:url" content="https://quizcrown-vip.github.io/quizcrown/">
+  <meta property="og:type" content="website">
   <style>
-    :root { --navy-950: #020612; --navy-900: #060e24; --navy-800: #0c1838; --gold: #f5a623; --gold-l: #ffd269; --green: #10b981; --red: #ef4444; --border: rgba(43,86,179,0.45); --text: #fff; --muted: #9bb0d1; }
+    :root {
+      --navy-950: #020612; --navy-900: #060e24; --navy-800: #0c1838;
+      --gold: #f5a623; --gold-l: #ffd269; --green: #10b981; --red: #ef4444;
+      --border: rgba(43, 86, 179, 0.45); --text: #ffffff; --muted: #9bb0d1;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--navy-950); color: var(--text); min-height: 100vh; padding-bottom: 70px; overflow-x: hidden; }
-    .top-navbar { height: 60px; background: rgba(6,14,36,0.95); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; position: sticky; top: 0; z-index: 100; }
-    .kbc-logo-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); }
+
+    /* Top Navbar - Initially Hidden before login */
+    .top-navbar { height: 60px; background: rgba(6,14,36,0.95); border-bottom: 1px solid var(--border); display: none; align-items: center; justify-content: space-between; padding: 0 14px; position: sticky; top: 0; z-index: 100; }
+    .kbc-logo-svg { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 10px rgba(245,166,35,0.4); display: block; }
     .lang-pill { background: #122452; border: 1px solid var(--border); border-radius: 14px; color: #fff; padding: 4px 8px; font-size: 11px; }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 58px; background: #060e24; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+
+    /* Bottom Nav Bar - Initially Hidden before login */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 58px; background: #060e24; border-top: 1px solid var(--border); display: none; justify-content: space-around; align-items: center; z-index: 100; }
     .b-item { display: flex; flex-direction: column; align-items: center; color: var(--muted); font-size: 10px; cursor: pointer; flex: 1; text-align: center; }
     .b-item.active { color: var(--gold); font-weight: bold; }
+
     .app-screen { display: none; width: 100%; }
     .app-screen.active { display: block !important; }
-    .center-card { max-width: 420px; margin: 20px auto; background: var(--navy-900); border: 1px solid var(--border); border-radius: 16px; padding: 20px; text-align: center; }
+    .center-card { max-width: 420px; margin: 30px auto; background: var(--navy-900); border: 1px solid var(--border); border-radius: 16px; padding: 22px; text-align: center; }
     .input-grp { text-align: left; margin-bottom: 12px; }
     .input-grp label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
     .input-grp input { width: 100%; padding: 12px; background: #020612; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 14px; outline: none; }
     .btn-gold { width: 100%; padding: 12px; background: linear-gradient(180deg, var(--gold-l), var(--gold)); color: #000; font-size: 14px; font-weight: 800; border: none; border-radius: 10px; cursor: pointer; }
+
     .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 14px; }
     .cat-box { background: #0c1838; border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center; }
     .opt-btn { width: 100%; text-align: left; padding: 12px 14px; margin-bottom: 8px; border-radius: 8px; background: #0c1838; border: 1px solid var(--border); color: #fff; font-size: 13px; cursor: pointer; }
     .opt-btn.correct { background: #065f46 !important; border-color: var(--green) !important; }
     .opt-btn.wrong { background: #881337 !important; border-color: var(--red) !important; }
+
     .payout-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
     .p-tab { flex: 1; padding: 10px; border: 1px solid var(--border); background: #020612; color: var(--muted); border-radius: 8px; cursor: pointer; font-weight: bold; }
     .p-tab.active { background: #1e3a8a; color: #fff; border-color: #3b82f6; }
+
     .prof-hero { background: linear-gradient(180deg, var(--gold), #d97706); padding: 20px 16px 36px; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px; color: #000; }
     .prof-cash { margin: -20px 14px 14px; background: #0c1838; border: 1px solid var(--border); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; }
     .prof-list { margin: 0 14px; background: #060e24; border: 1px solid var(--border); border-radius: 14px; }
     .prof-row { display: flex; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid rgba(43,86,179,0.25); font-size: 13px; color: #e2e8f0; }
+
+    /* Winners Ticker Bar */
+    .winner-bar { background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.25); border-radius: 10px; margin: 10px 14px; padding: 8px 12px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
   </style>
 </head>
 <body>
-  <header class="top-navbar">
+
+  <!-- Top Navbar (Only visible after login) -->
+  <header class="top-navbar" id="mainHeader">
     <div style="display:flex; align-items:center; gap:8px;" onclick="showScreen('screenLobby')">
-      <img src="https://upload.wikimedia.org/wikipedia/en/3/30/Kaun_Banega_Crorepati_logo.jpg" class="kbc-logo-img" alt="KBC">
-      <div><b style="color:var(--gold); font-size:15px;">CROREPATI</b><br><span style="font-size:8px; color:var(--muted);">VIP QUIZ</span></div>
+      <!-- Permanent Built-in SVG KBC Logo -->
+      <svg class="kbc-logo-svg" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="48" fill="#1b0933" stroke="#f5a623" stroke-width="3"/>
+        <circle cx="50" cy="50" r="41" fill="none" stroke="#2563eb" stroke-width="2"/>
+        <g stroke="#f5a623" stroke-width="1.2" opacity="0.6">
+          <line x1="50" y1="10" x2="50" y2="90"/><line x1="10" y1="50" x2="90" y2="50"/>
+          <line x1="22" y1="22" x2="78" y2="78"/><line x1="22" y1="78" x2="78" y2="22"/>
+        </g>
+        <circle cx="50" cy="50" r="24" fill="#0f172a" stroke="#f5a623" stroke-width="2"/>
+        <text x="50" y="44" fill="#ffd269" font-size="11" font-weight="900" text-anchor="middle">₹ ₹ ₹</text>
+        <rect x="8" y="45" width="84" height="12" rx="3" fill="#090e24" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="50" y="54" fill="#ffffff" font-size="7.5" font-weight="900" text-anchor="middle" letter-spacing="1">CROREPATI</text>
+      </svg>
+      <div><b style="color:var(--gold); font-size:14px;">कौन बनेगा करोड़पति</b><br><span style="font-size:8px; color:var(--muted);">VIP QUIZ</span></div>
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
       <select class="lang-pill" id="siteLang" onchange="applyLang(this.value)"><option value="hi">🇮🇳 हिन्दी</option><option value="en">🌐 English</option></select>
@@ -47,21 +80,29 @@
     </div>
   </header>
 
-  <nav class="bottom-nav">
-    <div class="b-item active" id="tabHome" onclick="showScreen('screenLobby')">🏠<br><span class="t-home">होम</span></div>
-    <div class="b-item" id="tabDeposit" onclick="showLockedWithdrawal()">📥<br><span class="t-deposit">डिपॉजिट</span></div>
-    <div class="b-item" id="tabPlay" onclick="startQuiz()">🎮<br><span class="t-play">क्विज</span></div>
-    <div class="b-item" id="tabMine" onclick="showScreen('screenProfile')">👤<br><span class="t-mine">माइन</span></div>
+  <!-- Bottom Nav Bar (Only visible after login) -->
+  <nav class="bottom-nav" id="mainBottomNav">
+    <div class="b-item active" id="tabHome" onclick="showScreen('screenLobby')">🏠<br><span>होम</span></div>
+    <div class="b-item" id="tabDeposit" onclick="showLockedWithdrawal()">📥<br><span>डिपॉजिट</span></div>
+    <div class="b-item" id="tabPlay" onclick="startQuiz()">🎮<br><span>क्विज</span></div>
+    <div class="b-item" id="tabMine" onclick="showScreen('screenProfile')">👤<br><span>माइन</span></div>
   </nav>
 
-  <!-- SCREEN 1: LOGIN -->
+  <!-- SCREEN 1: LOGIN (Name Updated to 'कौन बनेगा करोड़पति') -->
   <section class="app-screen active" id="screenLogin">
     <div class="center-card">
-      <img src="https://upload.wikimedia.org/wikipedia/en/3/30/Kaun_Banega_Crorepati_logo.jpg" style="width:60px; height:60px; border-radius:50%; margin-bottom:8px; border:2px solid var(--gold);">
-      <h3 style="color:var(--gold); margin-bottom:4px;" class="t-login-t">करोड़पति वीआईपी लॉगिन</h3>
-      <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">अपना 10-अंकों का नंबर और पिन दर्ज करें</p>
-      <div class="input-grp"><label>मोबाइल नंबर</label><input type="tel" id="uMobile" placeholder="10 Digit Number" maxlength="10"></div>
-      <div class="input-grp"><label>4-अंकों का गुप्त पिन</label><input type="password" id="uPin" placeholder="4 Digit PIN" maxlength="4"></div>
+      <svg class="kbc-logo-svg" style="width:68px; height:68px; margin:0 auto 10px;" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="48" fill="#1b0933" stroke="#f5a623" stroke-width="3"/>
+        <circle cx="50" cy="50" r="41" fill="none" stroke="#2563eb" stroke-width="2"/>
+        <circle cx="50" cy="50" r="24" fill="#0f172a" stroke="#f5a623" stroke-width="2"/>
+        <text x="50" y="44" fill="#ffd269" font-size="11" font-weight="900" text-anchor="middle">₹ ₹ ₹</text>
+        <rect x="8" y="45" width="84" height="12" rx="3" fill="#090e24" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="50" y="54" fill="#ffffff" font-size="7.5" font-weight="900" text-anchor="middle" letter-spacing="1">CROREPATI</text>
+      </svg>
+      <h2 style="color:var(--gold); margin-bottom:4px; font-size:19px;">कौन बनेगा करोड़पति</h2>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">अपना 10-अंकों का नंबर और 4-अंकों का पिन दर्ज करें</p>
+      <div class="input-grp"><label>मोबाइल नंबर</label><input type="tel" id="uMobile" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10"></div>
+      <div class="input-grp"><label>4-अंकों का गुप्त पिन</label><input type="password" id="uPin" placeholder="4 अंकों का पिन" maxlength="4"></div>
       <button type="button" class="btn-gold" onclick="doLogin()">लॉगिन करें</button>
     </div>
   </section>
@@ -77,7 +118,13 @@
   </section>
   <!-- SCREEN 3: LOBBY -->
   <section class="app-screen" id="screenLobby">
-    <div style="background: radial-gradient(circle, #1b4b9b, #071638); padding: 18px; border-radius: 14px; margin: 12px 14px; border: 1px solid var(--border);">
+    <!-- Live Winners Ticker Bar -->
+    <div class="winner-bar">
+      <span style="font-weight:bold; color:var(--gold);">🏆 LIVE WINNER:</span>
+      <span id="winnerTickerText" style="color:#fff;">Rohit S. won ₹25,000 via UPI</span>
+    </div>
+
+    <div style="background: radial-gradient(circle, #1b4b9b, #071638); padding: 18px; border-radius: 14px; margin: 10px 14px; border: 1px solid var(--border);">
       <h3 id="lobbyHiText">वापसी पर स्वागत है!</h3>
       <p style="font-size: 11px; color: #bdd2f2; margin-top: 2px;">क्या आज आप बनेंगे करोड़पति? खेलिए 20 प्रश्न!</p>
     </div>
@@ -129,6 +176,7 @@
       <div id="qAlert" style="min-height: 18px; text-align: center; font-weight: bold; font-size: 12px; margin-top: 6px;"></div>
     </div>
   </section>
+
   <!-- SCREEN 5: BREAKDOWN -->
   <section class="app-screen" id="screenBreakdown">
     <div class="center-card">
@@ -258,6 +306,20 @@
       { hi: "2024 ओलंपिक कहाँ हुए थे?", en: "Where were 2024 Olympics held?", opt: { hi: ["टोक्यो","पेरिस","लंदन","लॉस एंजिल्स"], en: ["Tokyo","Paris","London","Los Angeles"] }, ans: 1 }
     ];
 
+    var winnerPool = [
+      "Rohit S. (Mumbai) won ₹25,000 via UPI",
+      "Pooja V. (Delhi) won ₹24,250 via GPay",
+      "Amit K. (Patna) won ₹22,000 via PhonePe",
+      "Sneha P. (Surat) won ₹25,000 via Bank",
+      "Vikas D. (Nagpur) won ₹25,000 via Paytm"
+    ];
+    var winIdx = 0;
+    setInterval(function() {
+      winIdx = (winIdx + 1) % winnerPool.length;
+      var el = document.getElementById('winnerTickerText');
+      if (el) el.innerText = winnerPool[winIdx];
+    }, 3500);
+
     function showScreen(id) {
       var s = document.querySelectorAll('.app-screen');
       for (var i = 0; i < s.length; i++) s[i].classList.remove('active');
@@ -277,6 +339,11 @@
       document.getElementById('userTopPhone').innerText = userPhoneMasked;
       document.getElementById('lobbyHiText').innerText = "वापसी पर स्वागत है, " + userPhoneMasked + "!";
       document.getElementById('txtMember').innerText = "Member_" + m.substring(6) + " ✏️";
+
+      // Show top header and bottom nav after login
+      document.getElementById('mainHeader').style.display = 'flex';
+      document.getElementById('mainBottomNav').style.display = 'flex';
+
       showScreen('screenLang');
     }
 
