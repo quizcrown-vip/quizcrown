@@ -3,481 +3,598 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Quiz Crown VIP - 20 Questions Jackpot ₹25,000</title>
-  <meta property="og:title" content="Quiz Crown VIP - 20 Questions Jackpot ₹25,000">
-  <meta property="og:description" content="Kheliye 20 Questions aur jeetiye ₹25,000 direct bank ya UPI mein!">
+  <title>CROREPATI - Kaun Banega Crorepati VIP Quiz</title>
+  <meta property="og:title" content="CROREPATI VIP - 20 Questions ₹25,000 Jackpot">
+  <meta property="og:description" content="Play 20 Questions and win up to ₹25,000 directly to your Bank / UPI account!">
   <meta property="og:url" content="https://quizcrown-vip.github.io/quizcrown/">
   <meta property="og:type" content="website">
   <style>
     :root {
-      --bg-dark: #070b14;
-      --card-bg: #0f172a;
-      --card-border: #1e293b;
-      --accent-gold: #f59e0b;
-      --accent-gold-hover: #fbbf24;
-      --accent-green: #10b981;
-      --accent-red: #ef4444;
-      --accent-blue: #3b82f6;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --navy-900: #030816;
+      --navy-800: #060e24;
+      --navy-700: #0c1838;
+      --gold-main: #f5a623;
+      --gold-light: #ffd269;
+      --green-accent: #10b981;
+      --red-accent: #ef4444;
+      --blue-accent: #1e6fff;
+      --border-blue: rgba(43, 86, 179, 0.45);
+      --text-white: #ffffff;
+      --text-gray: #9bb0d1;
+      --card-radius: 14px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg-dark); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 0; }
-    .app-viewport { width: 100%; max-width: 480px; min-height: 100vh; background: var(--card-bg); display: flex; flex-direction: column; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
 
-    /* Top Winner Ticker */
-    .ticker-container { background: linear-gradient(90deg, #1e1b4b, #0f172a); border-bottom: 1px solid #312e81; padding: 8px 12px; display: flex; align-items: center; gap: 8px; overflow: hidden; }
-    .ticker-tag { background: var(--accent-gold); color: #000; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
-    .ticker-text { font-size: 11px; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; transition: opacity 0.3s; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--navy-900); color: var(--text-white); min-height: 100vh; overflow-x: hidden; }
 
-    /* App Header */
-    .app-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); background: #0b1120; }
-    .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 18px; color: var(--accent-gold); letter-spacing: 0.5px; }
-    .wallet-chip { background: #062e24; border: 1px solid #047857; color: var(--accent-green); padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    /* Top Navigation Header */
+    .top-navbar {
+      height: 70px; background: rgba(6, 14, 36, 0.95); border-bottom: 1px solid var(--border-blue);
+      display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
+      position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
+    }
+    .brand-group { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .brand-logo-disc {
+      width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle, #2752aa, #081636);
+      border: 2px solid var(--gold-main); display: flex; align-items: center; justify-content: center; font-size: 20px;
+      box-shadow: 0 0 15px rgba(245, 166, 35, 0.4);
+    }
+    .brand-titles h2 { font-size: 18px; font-weight: 900; color: var(--gold-main); line-height: 1; }
+    .brand-titles span { font-size: 9px; font-weight: 700; color: #cedbf0; letter-spacing: 1.2px; }
 
-    /* Screens */
-    .screen { padding: 20px 16px; flex: 1; display: none; }
-    .screen.active { display: flex; flex-direction: column; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .lang-pill { background: rgba(18, 36, 82, 0.8); border: 1px solid var(--border-blue); border-radius: 16px; color: #fff; padding: 5px 10px; font-size: 12px; font-weight: 600; outline: none; }
+    .user-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+    .avatar-circle { width: 32px; height: 32px; border-radius: 50%; background: #264380; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gold-light); }
 
-    /* Login Screen */
-    .login-hero { text-align: center; margin: 20px 0 25px; }
-    .crown-banner { font-size: 56px; line-height: 1; filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.4)); margin-bottom: 12px; }
-    .hero-title { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 6px; }
-    .hero-desc { font-size: 13px; color: var(--text-muted); }
-    .input-box { margin-bottom: 16px; }
-    .input-box label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .input-box input { width: 100%; padding: 14px; background: #070b14; border: 1px solid var(--card-border); border-radius: 12px; color: #fff; font-size: 15px; outline: none; transition: border-color 0.2s; }
-    .input-box input:focus { border-color: var(--accent-gold); }
+    /* App Screens Control */
+    .app-screen { display: none; width: 100%; }
+    .app-screen.active { display: block; }
 
-    /* Buttons */
-    .btn-main { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--accent-gold-hover), var(--accent-gold)); color: #000; font-size: 15px; font-weight: 800; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); transition: transform 0.1s; }
-    .btn-main:active { transform: scale(0.98); }
+    /* Common Card Wrappers */
+    .auth-center-wrap { min-height: calc(100vh - 70px); display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .auth-card { width: 100%; max-width: 440px; background: var(--navy-800); border: 1px solid var(--border-blue); border-radius: 18px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.7); text-align: center; }
 
-    /* Language Selection Screen */
-    .lang-grid { display: flex; flex-direction: column; gap: 12px; margin: 18px 0 24px; }
-    .lang-item { background: #070b14; border: 1px solid var(--card-border); border-radius: 12px; padding: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
-    .lang-item.selected { border-color: var(--accent-gold); background: rgba(245, 158, 11, 0.08); }
-    .lang-name { font-size: 15px; font-weight: 600; }
-    .lang-native { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-    .lang-check { color: var(--accent-gold); font-size: 18px; font-weight: 800; display: none; }
-    .lang-item.selected .lang-check { display: block; }
+    .input-group { text-align: left; margin-bottom: 14px; }
+    .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-gray); margin-bottom: 6px; text-transform: uppercase; }
+    .input-group input { width: 100%; padding: 13px 14px; background: #030816; border: 1px solid var(--border-blue); border-radius: 10px; color: #fff; font-size: 14px; outline: none; }
+    .input-group input:focus { border-color: var(--gold-main); }
 
-    /* Quiz Screen */
-    .progress-track { height: 6px; background: #1e293b; border-radius: 3px; overflow: hidden; margin-bottom: 16px; }
-    .progress-fill { height: 100%; background: var(--accent-gold); width: 5%; transition: width 0.3s; }
-    .q-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 13px; font-weight: 700; }
-    .q-badge { color: var(--accent-gold); }
-    .q-reward { color: var(--accent-green); }
-    .q-card { background: #0b1120; border: 1px solid var(--card-border); border-radius: 16px; padding: 20px 16px; margin-bottom: 20px; font-size: 16px; font-weight: 600; line-height: 1.5; text-align: center; }
-    .options-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-    .opt-btn { background: #070b14; border: 1px solid var(--card-border); border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 14px; font-weight: 500; text-align: left; cursor: pointer; transition: 0.15s; }
-    .opt-btn.correct { background: #064e3b !important; border-color: var(--accent-green) !important; color: #fff !important; }
-    .opt-btn.wrong { background: #7f1d1d !important; border-color: var(--accent-red) !important; color: #fff !important; }
-    .feedback-note { text-align: center; font-size: 13px; font-weight: 700; min-height: 20px; }
+    .btn-gold {
+      width: 100%; padding: 13px; background: linear-gradient(180deg, #fed876, #f5a623);
+      color: #030816; border: none; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer;
+      box-shadow: 0 4px 15px rgba(245, 166, 35, 0.3); transition: transform 0.1s;
+    }
+    .btn-gold:active { transform: scale(0.98); }
 
-    /* Winning Summary / Pre-Withdrawal History */
-    .win-hero { text-align: center; margin-bottom: 16px; }
-    .win-amount-big { font-size: 38px; font-weight: 900; color: var(--accent-gold); margin: 6px 0; }
-    .history-card { background: #070b14; border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden; margin: 14px 0 20px; }
-    .history-title { padding: 10px 14px; background: #0f172a; font-size: 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--card-border); }
-    .history-scroll { max-height: 230px; overflow-y: auto; }
-    .h-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid #141d33; font-size: 13px; }
-    .h-row:last-child { border-bottom: none; }
-    .h-gain { color: var(--accent-green); font-weight: 700; }
-    .h-lost { color: var(--accent-red); font-size: 11px; }
+    /* Screen 2: Language Picker Cards */
+    .lang-item-box {
+      background: #030816; border: 1px solid var(--border-blue); border-radius: 12px; padding: 16px;
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; cursor: pointer; text-align: left;
+    }
+    .lang-item-box.selected { border-color: var(--gold-main); background: rgba(245, 166, 35, 0.1); }
 
-    /* Withdrawal Screen & QR */
-    .pay-card { background: #070b14; border: 1px solid var(--card-border); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px; }
-    .qr-frame { background: #fff; padding: 12px; border-radius: 14px; display: inline-block; margin: 12px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-    .qr-frame img { width: 170px; height: 170px; display: block; }
-    .upi-info { font-size: 13px; font-weight: 700; color: var(--accent-gold); margin-bottom: 4px; }
-    .upi-sub { font-size: 11px; color: var(--text-muted); }
+    /* Screen 3: KBC Lobby Dashboard */
+    .dashboard-grid {
+      display: grid; grid-template-columns: 220px 1fr 300px; gap: 16px;
+      padding: 18px; max-width: 1500px; margin: 0 auto;
+    }
+    .sidebar { display: flex; flex-direction: column; gap: 8px; }
+    .side-item {
+      display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px;
+      color: #cbd5e1; font-size: 14px; font-weight: 600; cursor: pointer;
+    }
+    .side-item.active { background: linear-gradient(90deg, #f5a623, #e09414); color: #030816; font-weight: 800; }
+    .crorepati-promo {
+      margin-top: auto; background: radial-gradient(circle at top, #11285e, #06102b);
+      border: 1px solid rgba(245, 166, 35, 0.3); border-radius: var(--card-radius); padding: 20px 14px; text-align: center;
+    }
+
+    .arena-banner {
+      border-radius: var(--card-radius); border: 1px solid var(--border-blue);
+      position: relative; overflow: hidden; background: radial-gradient(circle at center, #1b4b9b, #071638 80%);
+      padding: 22px 24px; box-shadow: inset 0 0 40px rgba(0,0,0,0.6); margin-bottom: 18px;
+    }
+    .arena-title { font-size: 24px; font-weight: 900; color: #fff; }
+    .arena-desc { font-size: 13px; color: #bdd2f2; margin-top: 4px; }
+
+    .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 14px; }
+    .cat-card {
+      border-radius: var(--card-radius); padding: 18px 12px; display: flex; flex-direction: column;
+      align-items: center; text-align: center; border: 1px solid rgba(255,255,255,0.1);
+    }
+    .cat-gk { background: linear-gradient(180deg, #184299, #0d214f); border-top: 3px solid #3b82f6; }
+    .cat-bolly { background: linear-gradient(180deg, #5b1a7d, #2f0e40); border-top: 3px solid #c084fc; }
+    .cat-sports { background: linear-gradient(180deg, #106641, #083421); border-top: 3px solid #10b981; }
+    .cat-tech { background: linear-gradient(180deg, #874e0d, #4a2804); border-top: 3px solid #f59e0b; }
+
+    .cat-val { font-size: 18px; font-weight: 900; color: #fff; margin: 4px 0 12px; }
+    .btn-play-card {
+      width: 100%; padding: 9px; background: linear-gradient(180deg, #fed876, #f5a623);
+      color: #030816; border: none; border-radius: 18px; font-size: 13px; font-weight: 800; cursor: pointer;
+    }
+
+    .right-column { display: flex; flex-direction: column; gap: 14px; }
+    .panel-box { background: var(--navy-800); border: 1px solid var(--border-blue); border-radius: var(--card-radius); padding: 16px; }
+    .wallet-val { font-size: 24px; font-weight: 900; color: #fff; margin: 4px 0 12px; }
+    .w-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(43,86,179,0.25); font-size: 13px; }
+    .w-row:last-child { border-bottom: none; }
+
+    /* Screen 4: Quiz Hotseat */
+    .quiz-view-wrap { max-width: 500px; margin: 30px auto; padding: 0 16px; }
+    .quiz-header-bar { display: flex; justify-content: space-between; font-weight: 800; font-size: 13px; margin-bottom: 14px; }
+    .q-question-box { background: var(--navy-800); border: 1px solid var(--border-blue); border-radius: 14px; padding: 20px 16px; text-align: center; font-size: 16px; font-weight: 700; line-height: 1.5; margin-bottom: 16px; }
+    .opt-btn {
+      width: 100%; text-align: left; padding: 13px 16px; margin-bottom: 10px; border-radius: 10px;
+      background: var(--navy-800); border: 1px solid var(--border-blue); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;
+    }
+    .opt-btn.correct { background: #065f46 !important; border-color: var(--green-accent) !important; }
+    .opt-btn.wrong { background: #881337 !important; border-color: var(--red-accent) !important; }
+
+    /* Screen 5: Winning Breakdown */
+    .history-scroll-box { max-height: 220px; overflow-y: auto; background: #030816; border: 1px solid var(--border-blue); border-radius: 10px; margin: 14px 0; text-align: left; }
+    .hist-item-row { display: flex; justify-content: space-between; padding: 9px 12px; border-bottom: 1px solid #0c1838; font-size: 13px; }
+
+    /* Screen 6: Withdrawal Locked & Recharge Status */
+    .lock-banner-box { background: rgba(239, 68, 68, 0.12); border: 1px solid var(--red-accent); border-radius: 12px; padding: 12px; margin-bottom: 16px; }
+    .recharge-status-grid { background: #030816; border: 1px solid var(--border-blue); border-radius: 10px; padding: 12px; margin: 14px 0; text-align: left; }
+    .recharge-status-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px solid #0d1a3d; }
+    .recharge-status-row:last-child { border-bottom: none; }
+
+    @media (max-width: 992px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .category-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 550px) {
+      .category-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
-<div class="app-viewport">
-  <!-- Top Live Changing Winners Ticker -->
-  <div class="ticker-container">
-    <span class="ticker-tag">LIVE WINNERS</span>
-    <span id="tickerDisplay" class="ticker-text">Sunil P. won ₹25,000 (UPI)</span>
-  </div>
-
-  <!-- App Header -->
-  <header class="app-header">
-    <div class="brand">
-      <span>👑</span>
-      <span>QUIZ CROWN</span>
+  <!-- Top Navbar -->
+  <header class="top-navbar">
+    <div class="brand-group" onclick="showScreen('screenLobby')">
+      <div class="brand-logo-disc">👑</div>
+      <div class="brand-titles">
+        <h2>CROREPATI</h2>
+        <span>KAUN BANEGA CROREPATI</span>
+      </div>
     </div>
-    <div class="wallet-chip">
-      <span>💰</span>
-      <span id="headerBalance">₹0.00</span>
+    <div class="nav-actions">
+      <select class="lang-pill" id="globalLangSelector" onchange="setSiteLanguage(this.value)">
+        <option value="hi">🇮🇳 हिन्दी</option>
+        <option value="en">🌐 English</option>
+      </select>
+      <div class="user-badge">
+        <div class="avatar-circle">👤</div>
+        <div>
+          <div>Manish</div>
+          <div style="font-size:9px; color:var(--text-gray)">ID: 102458</div>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- SCREEN 1: LOGIN -->
-  <section class="screen active" id="screenLogin">
-    <div class="login-hero">
-      <div class="crown-banner">👑</div>
-      <h1 class="hero-title">VIP Jackpot 2026</h1>
-      <p class="hero-desc">Play 20 Questions • Win ₹25,000 Direct in Account</p>
-    </div>
-    <div class="input-box">
-      <label>Mobile Number</label>
-      <input type="tel" id="inputPhone" placeholder="Enter 10-digit mobile number" maxlength="10">
-    </div>
-    <div class="input-box">
-      <label>4-Digit Security PIN</label>
-      <input type="password" id="inputPin" placeholder="Enter 4-digit PIN" maxlength="4">
-    </div>
-    <button class="btn-main" onclick="onLoginSubmit()">Login & Choose Language</button>
-  </section>
-
-  <!-- SCREEN 2: LANGUAGE SELECTION (Right After Login) -->
-  <section class="screen" id="screenLanguage">
-    <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">Choose Language</h2>
-    <p style="font-size: 13px; color: var(--text-muted);">अपनी पसंदीदा भाषा चुनें / Select your quiz language:</p>
-
-    <div class="lang-grid">
-      <div class="lang-item selected" id="optLangHi" onclick="chooseAppLang('hi')">
-        <div>
-          <div class="lang-name">हिन्दी (Hindi)</div>
-          <div class="lang-native">प्रश्नोत्तरी हिन्दी में खेलें</div>
+  <!-- SCREEN 1: USER LOGIN -->
+  <section class="app-screen active" id="screenLogin">
+    <div class="auth-center-wrap">
+      <div class="auth-card">
+        <div style="font-size: 44px; margin-bottom: 8px;">👑</div>
+        <h2 style="color:var(--gold-main); margin-bottom: 6px;">CROREPATI VIP LOGIN</h2>
+        <p style="font-size: 13px; color:var(--text-gray); margin-bottom: 20px;">Apna mobile number aur secret PIN enter karein</p>
+        
+        <div class="input-group">
+          <label>Mobile Number</label>
+          <input type="tel" id="loginPhone" placeholder="Enter 10-digit mobile number" maxlength="10">
         </div>
-        <div class="lang-check">✓</div>
-      </div>
-
-      <div class="lang-item" id="optLangEn" onclick="chooseAppLang('en')">
-        <div>
-          <div class="lang-name">English</div>
-          <div class="lang-native">Play questions in English</div>
+        <div class="input-group">
+          <label>4-Digit Security PIN</label>
+          <input type="password" id="loginPin" placeholder="Enter 4-digit PIN" maxlength="4">
         </div>
-        <div class="lang-check">✓</div>
+
+        <button class="btn-gold" onclick="submitUserLogin()">Login to Crorepati</button>
       </div>
     </div>
-
-    <button class="btn-main" onclick="startQuizRound()">Start 20 Questions Quiz</button>
   </section>
 
-  <!-- SCREEN 3: 20 QUESTIONS QUIZ (No retry on wrong answer) -->
-  <section class="screen" id="screenQuiz">
-    <div class="progress-track">
-      <div class="progress-fill" id="quizProgressFill"></div>
-    </div>
-    <div class="q-meta">
-      <span class="q-badge" id="qIndexBadge">QUESTION 1 OF 20</span>
-      <span class="q-reward" id="qPrizeBadge">Prize: ₹1,000</span>
-    </div>
-    <div class="q-card" id="qTextContainer">Question Loading...</div>
-    <div class="options-group" id="qOptionsContainer"></div>
-    <div class="feedback-note" id="feedbackMessage"></div>
-  </section>
+  <!-- SCREEN 2: WEBSITE LANGUAGE (Immediately After Login) -->
+  <section class="app-screen" id="screenLanguage">
+    <div class="auth-center-wrap">
+      <div class="auth-card">
+        <h3 style="margin-bottom: 6px;">Select Website Language</h3>
+        <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 18px;">अपनी पसंदीदा भाषा चुनें / Choose your preferred language</p>
 
-  <!-- SCREEN 4: WINNING HISTORY BREAKDOWN (Before Withdrawal) -->
-  <section class="screen" id="screenWinningSummary">
-    <div class="win-hero">
-      <span style="font-size: 11px; background: rgba(16, 185, 129, 0.15); color: var(--accent-green); padding: 4px 10px; border-radius: 20px; font-weight: 700;">CONGRATULATIONS</span>
-      <div class="win-amount-big" id="finalPrizeWon">₹25,000</div>
-      <p style="font-size: 13px; color: var(--text-muted);">Quiz Completed! Niche question-wise winning breakdown check karein:</p>
-    </div>
+        <div class="lang-item-box selected" id="pickHi" onclick="chooseLanguageOption('hi')">
+          <div>
+            <div style="font-weight:700;">🇮🇳 हिन्दी (Hindi)</div>
+            <div style="font-size:12px; color:var(--text-gray)">प्रश्नोत्तरी हिन्दी में खेलें</div>
+          </div>
+          <div style="color:var(--gold-main); font-weight:800;" id="chkHi">✓</div>
+        </div>
 
-    <div class="history-card">
-      <div class="history-title">DETAILED QUESTION-WISE PRIZE EARNED</div>
-      <div class="history-scroll" id="historyBreakdownList"></div>
-    </div>
+        <div class="lang-item-box" id="pickEn" onclick="chooseLanguageOption('en')">
+          <div>
+            <div style="font-weight:700;">🌐 English</div>
+            <div style="font-size:12px; color:var(--text-gray)">Play quiz in English language</div>
+          </div>
+          <div style="color:var(--gold-main); font-weight:800; display:none;" id="chkEn">✓</div>
+        </div>
 
-    <button class="btn-main" onclick="openWithdrawalScreen()">Proceed to Instant Withdrawal</button>
-  </section>
-
-  <!-- SCREEN 5: WITHDRAWAL & QR (Sunil ₹699) -->
-  <section class="screen" id="screenWithdrawal">
-    <div class="pay-card">
-      <h3 style="font-size: 18px; font-weight: 800; color: #fff;">Payout Verification</h3>
-      <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Security processing fee required to release ₹25,000 winning prize</p>
-
-      <div class="qr-frame">
-        <img id="upiQrImage" src="" alt="Payment QR">
+        <button class="btn-gold" onclick="confirmLanguageAndOpenLobby()" style="margin-top: 10px;">Enter Lobby</button>
       </div>
-      <div class="upi-info">Pay ₹699 to Sunil</div>
-      <div class="upi-sub">UPI ID: sunil.2185@superyes</div>
     </div>
-
-    <div class="input-box">
-      <label>Your Bank Account / UPI ID for Receiving ₹25,000</label>
-      <input type="text" placeholder="example@upi or Account number">
-    </div>
-
-    <div class="input-box">
-      <label>12-Digit Transaction / UTR Number</label>
-      <input type="text" placeholder="Enter 12-digit UTR after payment" maxlength="12">
-    </div>
-
-    <button class="btn-main" onclick="submitWithdrawal()">Confirm & Withdraw ₹25,000</button>
   </section>
-</div>
 
-<script>
-  let selectedLanguage = 'hi';
-  let currentQuestionIndex = 0;
-  let accumulatedPrize = 0;
-  let answersLog = [];
+  <!-- SCREEN 3: KBC DASHBOARD LOBBY -->
+  <section class="app-screen" id="screenLobby">
+    <main class="dashboard-grid">
+      <!-- Left Sidebar -->
+      <aside class="sidebar">
+        <div class="side-item active" onclick="showScreen('screenLobby')">🏠 Lobby</div>
+        <div class="side-item" onclick="startQuizSession('General Knowledge')">🎮 Play Quiz</div>
+        <div class="side-item" onclick="openWithdrawalFlow()">💼 My Wallet</div>
+        <div class="side-item" onclick="alert('Transaction History: 0 Successful withdrawals.')">📑 Transaction History</div>
+        <div class="side-item" onclick="alert('Leaderboard #1: Manish (Active)')">🏆 Leaderboard</div>
+        <div class="side-item" onclick="alert('WhatsApp Helpdesk 24/7 active.')">🎧 Help & Support</div>
+        
+        <div class="crorepati-promo">
+          <div style="font-size:32px;">👑</div>
+          <div style="font-size:11px; font-weight:800; color:var(--gold-light);">BADA SOCHO</div>
+          <div style="font-size:13px; margin:3px 0;">Sahi Jawaab Do</div>
+          <div style="font-size:15px; font-weight:900; color:var(--gold-main);">JEETO CROREPATI</div>
+        </div>
+      </aside>
 
-  // Prize distribution for 20 questions = ₹25,000 total
-  const prizeStructure = [
-    500, 500, 750, 750, 1000,
-    1000, 1000, 1250, 1250, 1250,
-    1250, 1500, 1500, 1500, 1500,
-    1750, 1750, 2000, 2000, 2750
-  ]; // Sum = 25,000
+      <!-- Center Hotseat Arena & Categories -->
+      <section>
+        <div class="arena-banner">
+          <div class="arena-title">Welcome Back, Manish!</div>
+          <div class="arena-desc">Kya aaj aap banenge Crorepati? Kheliye 20 Questions Jackpot!</div>
+        </div>
 
-  // 20 General Knowledge & Trivia Questions in Hindi & English
-  const questionsBank = [
-    {
-      hi: { q: "भारत की राजधानी कौन सी है?", opts: ["मुंबई", "नई दिल्ली", "कोलकाता", "चेन्नई"] },
-      en: { q: "What is the capital of India?", opts: ["Mumbai", "New Delhi", "Kolkata", "Chennai"] },
-      ans: 1
-    },
-    {
-      hi: { q: "सौरमंडल का सबसे बड़ा ग्रह कौन सा है?", opts: ["मंगल", "बृहस्पति (Jupiter)", "शनि", "पृथ्वी"] },
-      en: { q: "Which is the largest planet in our solar system?", opts: ["Mars", "Jupiter", "Saturn", "Earth"] },
-      ans: 1
-    },
-    {
-      hi: { q: "कंप्यूटर का मस्तिष्क (Brain) किसे कहा जाता है?", opts: ["RAM", "CPU", "Hard Disk", "Monitor"] },
-      en: { q: "What is known as the brain of the computer?", opts: ["RAM", "CPU", "Hard Disk", "Monitor"] },
-      ans: 1
-    },
-    {
-      hi: { q: "भारत ने 2011 का क्रिकेट विश्व कप फाइनल किस देश के खिलाफ जीता था?", opts: ["ऑस्ट्रेलिया", "पाकिस्तान", "श्रीलंका", "इंग्लैंड"] },
-      en: { q: "Against which country did India win the 2011 Cricket World Cup final?", opts: ["Australia", "Pakistan", "Sri Lanka", "England"] },
-      ans: 2
-    },
-    {
-      hi: { q: "पानी का रासायनिक सूत्र क्या है?", opts: ["CO2", "H2O", "O2", "NaCl"] },
-      en: { q: "What is the chemical formula of water?", opts: ["CO2", "H2O", "O2", "NaCl"] },
-      ans: 1
-    },
-    {
-      hi: { q: "ताजमहल किस नदी के तट पर स्थित है?", opts: ["गंगा", "यमुना", "नर्मदा", "गोदावरी"] },
-      en: { q: "On the banks of which river is the Taj Mahal located?", opts: ["Ganga", "Yamuna", "Narmada", "Godavari"] },
-      ans: 1
-    },
-    {
-      hi: { q: "भारत का राष्ट्रीय पशु कौन सा है?", opts: ["शेर", "बाघ (Royal Bengal Tiger)", "हाथी", "चीता"] },
-      en: { q: "What is the national animal of India?", opts: ["Lion", "Royal Bengal Tiger", "Elephant", "Cheetah"] },
-      ans: 1
-    },
-    {
-      hi: { q: "सूर्य के सबसे निकटतम ग्रह कौन सा है?", opts: ["बुध (Mercury)", "शुक्र", "मंगल", "पृथ्वी"] },
-      en: { q: "Which planet is closest to the Sun?", opts: ["Mercury", "Venus", "Mars", "Earth"] },
-      ans: 0
-    },
-    {
-      hi: { q: "भारतीय संविधान के जनक के रूप में किसे जाना जाता है?", opts: ["महात्मा गांधी", "डॉ. बी. आर. अम्बेडकर", "जवाहरलाल नेहरू", "सरदार पटेल"] },
-      en: { q: "Who is known as the Father of the Indian Constitution?", opts: ["Mahatma Gandhi", "Dr. B.R. Ambedkar", "Jawaharlal Nehru", "Sardar Patel"] },
-      ans: 1
-    },
-    {
-      hi: { q: "UPI का पूरा नाम (Full Form) क्या है?", opts: ["Unified Payments Interface", "Union Pay India", "Universal Process Instant", "Unique Pay Identity"] },
-      en: { q: "What is the full form of UPI?", opts: ["Unified Payments Interface", "Union Pay India", "Universal Process Instant", "Unique Pay Identity"] },
-      ans: 0
-    },
-    {
-      hi: { q: "विश्व की सबसे ऊँची पर्वत चोटी कौन सी है?", opts: ["कंचनजंगा", "माउंट एवरेस्ट", "K2 (गॉडविन ऑस्टिन)", "नंदा देवी"] },
-      en: { q: "Which is the highest mountain peak in the world?", opts: ["Kanchenjunga", "Mount Everest", "K2", "Nanda Devi"] },
-      ans: 1
-    },
-    {
-      hi: { q: "भारतीय अंतरिक्ष अनुसंधान संगठन (ISRO) का मुख्यालय कहाँ है?", opts: ["मुंबई", "बेंगलुरु", "नई दिल्ली", "हैदराबाद"] },
-      en: { q: "Where is the headquarters of ISRO located?", opts: ["Mumbai", "Bengaluru", "New Delhi", "Hyderabad"] },
-      ans: 1
-    },
-    {
-      hi: { q: "वयस्क मानव शरीर में कुल कितनी हड्डियाँ होती हैं?", opts: ["206", "208", "210", "300"] },
-      en: { q: "How many bones are there in an adult human body?", opts: ["206", "208", "210", "300"] },
-      ans: 0
-    },
-    {
-      hi: { q: "भारत के 'मिसाइल मैन' के रूप में किसे जाना जाता है?", opts: ["डॉ. होमी भाभा", "डॉ. एपीजे अब्दुल कलाम", "विक्रम साराभाई", "सीवी रमन"] },
-      en: { q: "Who is known as the 'Missile Man of India'?", opts: ["Dr. Homi Bhabha", "Dr. APJ Abdul Kalam", "Vikram Sarabhai", "CV Raman"] },
-      ans: 1
-    },
-    {
-      hi: { q: "फेसबुक (Meta) के मुख्य संस्थापक कौन हैं?", opts: ["एलन मस्क", "बिल गेट्स", "मार्क जुकरबर्ग", "स्टीव जॉब्स"] },
-      en: { q: "Who is the primary founder of Facebook (Meta)?", opts: ["Elon Musk", "Bill Gates", "Mark Zuckerberg", "Steve Jobs"] },
-      ans: 2
-    },
-    {
-      hi: { q: "क्षेत्रफल के अनुसार भारत का सबसे बड़ा राज्य कौन सा है?", opts: ["उत्तर प्रदेश", "महाराष्ट्र", "राजस्थान", "मध्य प्रदेश"] },
-      en: { q: "Which is the largest state in India by land area?", opts: ["Uttar Pradesh", "Maharashtra", "Rajasthan", "Madhya Pradesh"] },
-      ans: 2
-    },
-    {
-      hi: { q: "गूगल (Google) के वर्तमान CEO कौन हैं?", opts: ["सत्य नडेला", "सुंदर पिचाई", "टिम कुक", "शांतनु नारायण"] },
-      en: { q: "Who is the current CEO of Google / Alphabet?", opts: ["Satya Nadella", "Sundar Pichai", "Tim Cook", "Shantanu Narayen"] },
-      ans: 1
-    },
-    {
-      hi: { q: "नोबेल पुरस्कार जीतने वाले प्रथम भारतीय कौन थे?", opts: ["रवींद्रनाथ टैगोर", "सीवी रमन", "मदर टेरेसा", "अमर्त्य सेन"] },
-      en: { q: "Who was the first Indian to receive a Nobel Prize?", opts: ["Rabindranath Tagore", "CV Raman", "Mother Teresa", "Amartya Sen"] },
-      ans: 0
-    },
-    {
-      hi: { q: "विटामिन सी का सबसे समृद्ध प्राकृतिक स्रोत कौन सा है?", opts: ["सेब", "आंवला", "केला", "दूध"] },
-      en: { q: "Which is the richest natural source of Vitamin C?", opts: ["Apple", "Amla (Indian Gooseberry)", "Banana", "Milk"] },
-      ans: 1
-    },
-    {
-      hi: { q: "2024 के ग्रीष्मकालीन ओलंपिक खेल किस शहर में आयोजित हुए थे?", opts: ["टोक्यो", "पेरिस", "लंदन", "लॉस एंजिल्स"] },
-      en: { q: "In which city were the 2024 Summer Olympic Games hosted?", opts: ["Tokyo", "Paris", "London", "Los Angeles"] },
-      ans: 1
+        <div style="font-size:17px; font-weight:800; margin-bottom:4px;">🎮 Select Quiz</div>
+        <div style="font-size:12px; color:var(--text-gray); margin-bottom:12px;">Answer 20 questions and win up to ₹25,000!</div>
+
+        <div class="category-grid">
+          <div class="cat-card cat-gk">
+            <div style="font-size:26px;">💡</div>
+            <div style="font-weight:800;">General Knowledge</div>
+            <div style="font-size:11px; color:#cbd5e1;">(सामान्य ज्ञान)</div>
+            <div style="font-size:11px; margin:6px 0;">20 Questions</div>
+            <div class="cat-val">₹ 25,000</div>
+            <button class="btn-play-card" onclick="startQuizSession('General Knowledge')">Play Now</button>
+          </div>
+
+          <div class="cat-card cat-bolly">
+            <div style="font-size:26px;">🎬</div>
+            <div style="font-weight:800;">Bollywood</div>
+            <div style="font-size:11px; color:#cbd5e1;">(बॉलीवुड)</div>
+            <div style="font-size:11px; margin:6px 0;">20 Questions</div>
+            <div class="cat-val">₹ 25,000</div>
+            <button class="btn-play-card" onclick="startQuizSession('Bollywood')">Play Now</button>
+          </div>
+
+          <div class="cat-card cat-sports">
+            <div style="font-size:26px;">⚽</div>
+            <div style="font-weight:800;">Sports</div>
+            <div style="font-size:11px; color:#cbd5e1;">(खेल)</div>
+            <div style="font-size:11px; margin:6px 0;">20 Questions</div>
+            <div class="cat-val">₹ 25,000</div>
+            <button class="btn-play-card" onclick="startQuizSession('Sports')">Play Now</button>
+          </div>
+
+          <div class="cat-card cat-tech">
+            <div style="font-size:26px;">⚛️</div>
+            <div style="font-weight:800;">Science & Tech</div>
+            <div style="font-size:11px; color:#cbd5e1;">(विज्ञान और तकनीक)</div>
+            <div style="font-size:11px; margin:6px 0;">20 Questions</div>
+            <div class="cat-val">₹ 25,000</div>
+            <button class="btn-play-card" onclick="startQuizSession('Science & Tech')">Play Now</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column (Wallet & Continuous Live Winners) -->
+      <aside class="right-column">
+        <div class="panel-box">
+          <div style="font-size:12px; color:var(--text-gray);">Your Wallet Balance</div>
+          <div class="wallet-val" id="lobbyWalletDisp">₹ 0.00</div>
+          <button class="btn-gold" style="border-radius:20px;" onclick="openWithdrawalFlow()">Withdraw</button>
+        </div>
+
+        <div class="panel-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div style="font-size:14px; font-weight:800;">🏆 Live Winners</div>
+            <span style="font-size:11px; color:var(--green-accent); font-weight:700;">● Real-time</span>
+          </div>
+          <div id="liveWinnersBox"></div>
+        </div>
+      </aside>
+    </main>
+  </section>
+
+  <!-- SCREEN 4: 20 QUESTIONS QUIZ (Single Attempt, Direct Next on Wrong) -->
+  <section class="app-screen" id="screenQuiz">
+    <div class="quiz-view-wrap">
+      <div class="quiz-header-bar">
+        <span style="color:var(--gold-main)" id="qIndexText">QUESTION 1 OF 20</span>
+        <span style="color:var(--green-accent)" id="qStepRewardText">Prize: +₹500</span>
+      </div>
+
+      <div class="q-question-box" id="qTextBox">Question loading...</div>
+      <div id="qOptionsWrapper"></div>
+      <div id="qFeedbackLabel" style="min-height:20px; font-weight:700; font-size:13px; text-align:center; margin-top:8px;"></div>
+    </div>
+  </section>
+
+  <!-- SCREEN 5: WINNING HISTORY BREAKDOWN (Before Withdrawal) -->
+  <section class="app-screen" id="screenHistoryBreakdown">
+    <div class="auth-center-wrap">
+      <div class="auth-card">
+        <div style="font-size:36px;">🎉</div>
+        <h3 style="margin-top:4px;">Quiz Round Completed!</h3>
+        <p style="font-size:12px; color:var(--text-gray); margin-top:2px;">Answers ke according jeeta gaya total amount:</p>
+        <div style="font-size:32px; font-weight:900; color:var(--gold-main); margin:8px 0;" id="breakdownWonCash">₹0</div>
+
+        <div class="history-scroll-box" id="breakdownRowsContainer"></div>
+
+        <button class="btn-gold" onclick="openLockedWithdrawalScreen()">
+          Proceed to Withdraw <span id="btnWithdrawAmountLabel">₹0</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 6: WITHDRAWAL LOCKED & MINIMUM RECHARGE (Sunil UPI ₹699) -->
+  <section class="app-screen" id="screenWithdrawLocked">
+    <div class="auth-center-wrap">
+      <div class="auth-card">
+        <!-- Locked Alert -->
+        <div class="lock-banner-box">
+          <div style="font-size:24px;">🔒</div>
+          <div style="font-weight:900; color:var(--red-accent); font-size:16px;">Withdrawal Locked</div>
+          <div style="font-size:12px; color:#fca5a5; margin-top:4px;">To activate withdrawal, a minimum recharge is required</div>
+        </div>
+
+        <div style="font-size:13px; color:var(--text-gray);">Winning Amount to be Released:</div>
+        <div style="font-size:26px; font-weight:900; color:var(--green-accent); margin:2px 0 10px;" id="lockedAmountToRelease">₹0.00</div>
+
+        <!-- Recharge Status Table -->
+        <div class="recharge-status-grid">
+          <div class="recharge-status-row">
+            <span>Minimum deposit required:</span>
+            <b style="color:var(--gold-main);">₹ 699</b>
+          </div>
+          <div class="recharge-status-row">
+            <span>Your deposit:</span>
+            <b>₹ 0.00</b>
+          </div>
+          <div class="recharge-status-row">
+            <span>Remaining needed:</span>
+            <b style="color:var(--red-accent);">₹ 699</b>
+          </div>
+        </div>
+
+        <!-- Sunil UPI QR Code (₹699) -->
+        <div style="background:#fff; padding:10px; border-radius:12px; display:inline-block; margin:6px 0;">
+          <img id="sunilQrImg" src="" alt="Payment QR" style="width:165px; height:165px; display:block;">
+        </div>
+        <div style="font-weight:800; color:var(--gold-main); font-size:13px;">Pay ₹699 to Sunil</div>
+        <div style="font-size:11px; color:var(--text-gray); margin-bottom:12px;">UPI ID: sunil.2185@superyes</div>
+
+        <div class="input-group">
+          <label>Your UPI ID or Bank A/C for Credit</label>
+          <input type="text" placeholder="example@upi or Account number">
+        </div>
+        <div class="input-group">
+          <label>12-Digit Transaction / UTR Number</label>
+          <input type="text" placeholder="Enter 12-digit UTR after recharge" maxlength="12">
+        </div>
+
+        <button class="btn-gold" onclick="alert('Recharge verification under process! Sunil ko ₹699 verify hote hi aapka winning amount credit ho jayega.')">Verify Deposit & Unlock</button>
+        <button onclick="showScreen('screenLobby')" style="background:transparent; border:none; color:var(--text-gray); font-size:12px; margin-top:12px; cursor:pointer;">Return to Lobby</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    let currentSelectedLang = 'hi';
+    let questionIndex = 0;
+    let actualWonCash = 0;
+    let questionLog = [];
+
+    // 20 Questions ladder totaling ₹25,000
+    const questionRewards = [
+      500, 500, 750, 750, 1000,
+      1000, 1000, 1250, 1250, 1250,
+      1250, 1500, 1500, 1500, 1500,
+      1750, 1750, 2000, 2000, 2750
+    ];
+
+    const quizQuestions = [
+      { hi: "भारत की राजधानी कौन सी है?", en: "What is the capital of India?", opt: { hi: ["मुंबई", "नई दिल्ली", "कोलकाता", "चेन्नई"], en: ["Mumbai", "New Delhi", "Kolkata", "Chennai"] }, ans: 1 },
+      { hi: "सौरमंडल का सबसे बड़ा ग्रह कौन सा है?", en: "Largest planet in solar system?", opt: { hi: ["मंगल", "बृहस्पति (Jupiter)", "शनि", "पृथ्वी"], en: ["Mars", "Jupiter", "Saturn", "Earth"] }, ans: 1 },
+      { hi: "कंप्यूटर का मस्तिष्क किसे कहा जाता है?", en: "Brain of the computer?", opt: { hi: ["RAM", "CPU", "Hard Disk", "Monitor"], en: ["RAM", "CPU", "Hard Disk", "Monitor"] }, ans: 1 },
+      { hi: "2011 क्रिकेट विश्व कप फाइनल भारत ने किसके खिलाफ जीता?", en: "Against whom India won 2011 Cricket World Cup?", opt: { hi: ["ऑस्ट्रेलिया", "पाकिस्तान", "श्रीलंका", "इंग्लैंड"], en: ["Australia", "Pakistan", "Sri Lanka", "England"] }, ans: 2 },
+      { hi: "पानी का रासायनिक सूत्र क्या है?", en: "Chemical formula of water?", opt: { hi: ["CO2", "H2O", "O2", "NaCl"], en: ["CO2", "H2O", "O2", "NaCl"] }, ans: 1 },
+      { hi: "ताजमहल किस नदी के तट पर स्थित है?", en: "Taj Mahal is on which river bank?", opt: { hi: ["गंगा", "यमुना", "नर्मदा", "गोदावरी"], en: ["Ganga", "Yamuna", "Narmada", "Godavari"] }, ans: 1 },
+      { hi: "भारत का राष्ट्रीय पशु कौन सा है?", en: "National animal of India?", opt: { hi: ["शेर", "बाघ (Tiger)", "हाथी", "चीता"], en: ["Lion", "Tiger", "Elephant", "Cheetah"] }, ans: 1 },
+      { hi: "सूर्य के सबसे निकटतम ग्रह कौन सा है?", en: "Planet closest to the Sun?", opt: { hi: ["बुध (Mercury)", "शुक्र", "मंगल", "पृथ्वी"], en: ["Mercury", "Venus", "Mars", "Earth"] }, ans: 0 },
+      { hi: "भारतीय संविधान के जनक के रूप में किसे जाना जाता है?", en: "Father of Indian Constitution?", opt: { hi: ["महात्मा गांधी", "डॉ. बी. आर. अम्बेडकर", "जवाहरलाल नेहरू", "सरदार पटेल"], en: ["Mahatma Gandhi", "Dr. B.R. Ambedkar", "Jawaharlal Nehru", "Sardar Patel"] }, ans: 1 },
+      { hi: "UPI का पूरा नाम क्या है?", en: "Full form of UPI?", opt: { hi: ["Unified Payments Interface", "Union Pay India", "Universal Process Instant", "Unique Pay Identity"], en: ["Unified Payments Interface", "Union Pay India", "Universal Process Instant", "Unique Pay Identity"] }, ans: 0 },
+      { hi: "विश्व की सबसे ऊँची पर्वत चोटी कौन सी है?", en: "Highest mountain peak?", opt: { hi: ["कंचनजंगा", "माउंट एवरेस्ट", "K2", "नंदा देवी"], en: ["Kanchenjunga", "Mount Everest", "K2", "Nanda Devi"] }, ans: 1 },
+      { hi: "ISRO का मुख्यालय कहाँ स्थित है?", en: "Where is ISRO headquarters located?", opt: { hi: ["मुंबई", "बेंगलुरु", "नई दिल्ली", "हैदराबाद"], en: ["Mumbai", "Bengaluru", "New Delhi", "Hyderabad"] }, ans: 1 },
+      { hi: "वयस्क मानव शरीर में कुल कितनी हड्डियाँ होती हैं?", en: "Bones in adult human body?", opt: { hi: ["206", "208", "210", "300"], en: ["206", "208", "210", "300"] }, ans: 0 },
+      { hi: "भारत के 'मिसाइल मैन' के नाम से किसे जाना जाता है?", en: "Missile Man of India?", opt: { hi: ["डॉ. होमी भाभा", "डॉ. एपीजे अब्दुल कलाम", "विक्रम साराभाई", "सीवी रमन"], en: ["Dr. Homi Bhabha", "Dr. APJ Abdul Kalam", "Vikram Sarabhai", "CV Raman"] }, ans: 1 },
+      { hi: "फेसबुक (Meta) के मुख्य संस्थापक कौन हैं?", en: "Founder of Facebook (Meta)?", opt: { hi: ["एलन मस्क", "बिल गेट्स", "मार्क जुकरबर्ग", "स्टीव जॉब्स"], en: ["Elon Musk", "Bill Gates", "Mark Zuckerberg", "Steve Jobs"] }, ans: 2 },
+      { hi: "क्षेत्रफल के अनुसार भारत का सबसे बड़ा राज्य कौन सा है?", en: "Largest state in India by area?", opt: { hi: ["उत्तर प्रदेश", "महाराष्ट्र", "राजस्थान", "मध्य प्रदेश"], en: ["Uttar Pradesh", "Maharashtra", "Rajasthan", "Madhya Pradesh"] }, ans: 2 },
+      { hi: "गूगल के वर्तमान CEO कौन हैं?", en: "Current CEO of Google?", opt: { hi: ["सत्य नडेला", "सुंदर पिचाई", "टिम कुक", "शांतनु नारायण"], en: ["Satya Nadella", "Sundar Pichai", "Tim Cook", "Shantanu Narayen"] }, ans: 1 },
+      { hi: "नोबेल पुरस्कार जीतने वाले प्रथम भारतीय कौन थे?", en: "First Indian Nobel laureate?", opt: { hi: ["रवींद्रनाथ टैगोर", "सीवी रमन", "मदर टेरेसा", "अमर्त्य सेन"], en: ["Rabindranath Tagore", "CV Raman", "Mother Teresa", "Amartya Sen"] }, ans: 0 },
+      { hi: "विटामिन सी का सबसे समृद्ध प्राकृतिक स्रोत कौन सा है?", en: "Richest natural source of Vitamin C?", opt: { hi: ["सेब", "आंवला", "केला", "दूध"], en: ["Apple", "Amla", "Banana", "Milk"] }, ans: 1 },
+      { hi: "2024 ओलंपिक खेल कहाँ आयोजित हुए थे?", en: "Where were 2024 Olympics held?", opt: { hi: ["टोक्यो", "पेरिस", "लंदन", "लॉस एंजिल्स"], en: ["Tokyo", "Paris", "London", "Los Angeles"] }, ans: 1 }
+    ];
+
+    // Live Changing Winners Pool
+    const winnersPool = [
+      { name: "Rohit Sharma", prize: "₹ 25,000", time: "Just now" },
+      { name: "Pooja Verma", prize: "₹ 24,250", time: "2 mins ago" },
+      { name: "Amit Kumar", prize: "₹ 22,000", time: "5 mins ago" },
+      { name: "Sneha Patel", prize: "₹ 25,000", time: "8 mins ago" },
+      { name: "Sunil Pune", prize: "₹ 25,000", time: "12 mins ago" },
+      { name: "Vikas Deshmukh", prize: "₹ 21,500", time: "16 mins ago" }
+    ];
+
+    function renderWinnersTicker() {
+      const box = document.getElementById('liveWinnersBox');
+      box.innerHTML = "";
+      winnersPool.slice(0, 4).forEach(w => {
+        const row = document.createElement('div');
+        row.className = "w-row";
+        row.innerHTML = `
+          <div><b>${w.name}</b><div style="font-size:10px; color:var(--text-gray);">${w.time}</div></div>
+          <div style="color:var(--gold-light); font-weight:800;">${w.prize}</div>
+        `;
+        box.appendChild(row);
+      });
     }
-  ];
 
-  // Dynamic changing live winners list
-  const liveWinnersPool = [
-    { name: "Sunil P.", city: "Pune", prize: "₹25,000", mode: "UPI" },
-    { name: "Rahul S.", city: "Jaipur", prize: "₹25,000", mode: "Bank" },
-    { name: "Pooja V.", city: "Lucknow", prize: "₹23,750", mode: "PhonePe" },
-    { name: "Amit K.", city: "Patna", prize: "₹25,000", mode: "GPay" },
-    { name: "Vikas D.", city: "Nagpur", prize: "₹24,500", mode: "Paytm" },
-    { name: "Suresh S.", city: "Raipur", prize: "₹25,000", mode: "UPI" },
-    { name: "Deepak M.", city: "Ahmedabad", prize: "₹22,500", mode: "Bank" },
-    { name: "Ananya R.", city: "Kolkata", prize: "₹25,000", mode: "UPI" },
-    { name: "Manoj Y.", city: "Indore", prize: "₹25,000", mode: "GPay" },
-    { name: "Kiran B.", city: "Bhopal", prize: "₹24,000", mode: "PhonePe" }
-  ];
-
-  let currentTickerIdx = 0;
-  setInterval(() => {
-    currentTickerIdx = (currentTickerIdx + 1) % liveWinnersPool.length;
-    const item = liveWinnersPool[currentTickerIdx];
-    const ticker = document.getElementById('tickerDisplay');
-    ticker.style.opacity = '0';
-    setTimeout(() => {
-      ticker.innerText = `${item.name} (${item.city}) won ${item.prize} via ${item.mode}`;
-      ticker.style.opacity = '1';
-    }, 300);
-  }, 3200);
-
-  function switchView(targetScreenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(targetScreenId).classList.add('active');
-  }
-
-  function onLoginSubmit() {
-    const phone = document.getElementById('inputPhone').value.trim();
-    const pin = document.getElementById('inputPin').value.trim();
-    if (phone.length !== 10 || pin.length !== 4) {
-      alert("Kripya 10-digit mobile number aur 4-digit PIN enter karein.");
-      return;
+    function rotateWinners() {
+      winnersPool.unshift(winnersPool.pop());
+      renderWinnersTicker();
     }
-    switchView('screenLanguage');
-  }
+    setInterval(rotateWinners, 3500);
 
-  function chooseAppLang(lang) {
-    selectedLanguage = lang;
-    document.getElementById('optLangHi').classList.toggle('selected', lang === 'hi');
-    document.getElementById('optLangEn').classList.toggle('selected', lang === 'en');
-  }
-
-  function startQuizRound() {
-    currentQuestionIndex = 0;
-    accumulatedPrize = 0;
-    answersLog = [];
-    document.getElementById('headerBalance').innerText = '₹0.00';
-    switchView('screenQuiz');
-    renderQuestion();
-  }
-
-  function renderQuestion() {
-    const qData = questionsBank[currentQuestionIndex];
-    const localized = qData[selectedLanguage];
-    const stepReward = prizeStructure[currentQuestionIndex];
-
-    document.getElementById('quizProgressFill').style.width = `${((currentQuestionIndex + 1) / 20) * 100}%`;
-    document.getElementById('qIndexBadge').innerText = `QUESTION ${currentQuestionIndex + 1} OF 20`;
-    document.getElementById('qPrizeBadge').innerText = `Prize: +₹${stepReward}`;
-    document.getElementById('qTextContainer').innerText = localized.q;
-    document.getElementById('feedbackMessage').innerText = "";
-
-    const optsBox = document.getElementById('qOptionsContainer');
-    optsBox.innerHTML = "";
-
-    localized.opts.forEach((choice, idx) => {
-      const btn = document.createElement('button');
-      btn.className = "opt-btn";
-      btn.innerText = `${String.fromCharCode(65 + idx)}. ${choice}`;
-      btn.onclick = () => handleAnswerClick(btn, idx, qData.ans, stepReward);
-      optsBox.appendChild(btn);
-    });
-  }
-
-  function handleAnswerClick(clickedBtn, userChoiceIdx, rightChoiceIdx, stepReward) {
-    const allButtons = document.querySelectorAll('.opt-btn');
-    allButtons.forEach(b => b.disabled = true);
-
-    const isCorrect = (userChoiceIdx === rightChoiceIdx);
-
-    if (isCorrect) {
-      clickedBtn.classList.add('correct');
-      accumulatedPrize += stepReward;
-      document.getElementById('feedbackMessage').innerHTML = `<span style="color:var(--accent-green)">✓ Sahi Jawab! +₹${stepReward}</span>`;
-      answersLog.push({ qNum: currentQuestionIndex + 1, won: true, reward: stepReward });
-    } else {
-      clickedBtn.classList.add('wrong');
-      allButtons[rightChoiceIdx].classList.add('correct');
-      document.getElementById('feedbackMessage').innerHTML = `<span style="color:var(--accent-red)">✕ Galat Jawab! Agle prashna par move ho rahe hain...</span>`;
-      answersLog.push({ qNum: currentQuestionIndex + 1, won: false, reward: stepReward });
+    function showScreen(screenId) {
+      document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+      window.scrollTo(0, 0);
     }
 
-    document.getElementById('headerBalance').innerText = `₹${accumulatedPrize.toLocaleString('en-IN')}`;
-
-    // Auto next question after 1.3 seconds - No retry allowed
-    setTimeout(() => {
-      currentQuestionIndex++;
-      if (currentQuestionIndex < questionsBank.length) {
-        renderQuestion();
-      } else {
-        showPreWithdrawalSummary();
+    function submitUserLogin() {
+      const mob = document.getElementById('loginPhone').value.trim();
+      const pin = document.getElementById('loginPin').value.trim();
+      if(mob.length !== 10 || pin.length !== 4) {
+        alert("Kripya 10-digit mobile number aur 4-digit PIN enter karein.");
+        return;
       }
-    }, 1300);
-  }
+      showScreen('screenLanguage');
+    }
 
-  function showPreWithdrawalSummary() {
-    switchView('screenWinningSummary');
-    document.getElementById('finalPrizeWon').innerText = `₹${accumulatedPrize.toLocaleString('en-IN')}`;
+    function chooseLanguageOption(lang) {
+      currentSelectedLang = lang;
+      document.getElementById('pickHi').classList.toggle('selected', lang === 'hi');
+      document.getElementById('pickEn').classList.toggle('selected', lang === 'en');
+      document.getElementById('chkHi').style.display = (lang === 'hi') ? 'block' : 'none';
+      document.getElementById('chkEn').style.display = (lang === 'en') ? 'block' : 'none';
+      document.getElementById('globalLangSelector').value = lang;
+    }
 
-    const listContainer = document.getElementById('historyBreakdownList');
-    listContainer.innerHTML = "";
+    function setSiteLanguage(lang) {
+      chooseLanguageOption(lang);
+    }
 
-    answersLog.forEach(log => {
-      const row = document.createElement('div');
-      row.className = "h-row";
-      row.innerHTML = `
-        <div><b>Question #${log.qNum}</b></div>
-        <div>
-          ${log.won 
-            ? `<span class="h-gain">+₹${log.reward} Won</span>` 
-            : `<span class="h-lost">₹0 (Missed ₹${log.reward})</span>`}
-        </div>
-      `;
-      listContainer.appendChild(row);
-    });
-  }
+    function confirmLanguageAndOpenLobby() {
+      showScreen('screenLobby');
+    }
 
-  function openWithdrawalScreen() {
-    switchView('screenWithdrawal');
+    function startQuizSession(categoryName) {
+      questionIndex = 0;
+      actualWonCash = 0;
+      questionLog = [];
+      showScreen('screenQuiz');
+      renderCurrentQuestion();
+    }
 
-    // Dynamic UPI QR code generation for Sunil (₹699)
-    const upiUri = `upi://pay?pa=sunil.2185@superyes&pn=Sunil&am=699&cu=INR&tn=QuizCrown_Jackpot_Verification`;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUri)}`;
-    document.getElementById('upiQrImage').src = qrUrl;
-  }
+    function renderCurrentQuestion() {
+      const q = quizQuestions[questionIndex];
+      const stepReward = questionRewards[questionIndex];
 
-  function submitWithdrawal() {
-    alert("Verification request received! Aapka prize amount ₹" + accumulatedPrize + " verification ke baad 10 minutes mein credit ho jayega.");
-  }
-</script>
+      document.getElementById('qIndexText').innerText = `QUESTION ${questionIndex + 1} OF 20`;
+      document.getElementById('qStepRewardText').innerText = `Prize: +₹${stepReward}`;
+      document.getElementById('qTextBox').innerText = q[currentSelectedLang];
+      document.getElementById('qFeedbackLabel').innerText = "";
+
+      const optsBox = document.getElementById('qOptionsWrapper');
+      optsBox.innerHTML = "";
+
+      q.opt[currentSelectedLang].forEach((choice, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "opt-btn";
+        btn.innerText = `${String.fromCharCode(65 + idx)}. ${choice}`;
+        btn.onclick = () => onAnswerSelected(btn, idx, q.ans, stepReward);
+        optsBox.appendChild(btn);
+      });
+    }
+
+    function onAnswerSelected(clickedBtn, selectedIdx, correctIdx, stepReward) {
+      const allButtons = document.querySelectorAll('.opt-btn');
+      allButtons.forEach(b => b.disabled = true);
+
+      const isRight = (selectedIdx === correctIdx);
+
+      if(isRight) {
+        clickedBtn.classList.add('correct');
+        actualWonCash += stepReward;
+        document.getElementById('qFeedbackLabel').innerHTML = `<span style="color:var(--green-accent)">✓ Sahi Jawab! +₹${stepReward}</span>`;
+        questionLog.push({ qNum: questionIndex + 1, won: true, reward: stepReward });
+      } else {
+        clickedBtn.classList.add('wrong');
+        allButtons[correctIdx].classList.add('correct');
+        document.getElementById('qFeedbackLabel').innerHTML = `<span style="color:var(--red-accent)">✕ Galat Jawab! Direct agle question par move ho rahe hain...</span>`;
+        questionLog.push({ qNum: questionIndex + 1, won: false, reward: stepReward });
+      }
+
+      document.getElementById('lobbyWalletDisp').innerText = `₹ ${actualWonCash.toLocaleString('en-IN')}`;
+
+      // No retry allowed: moves directly to next question in 1.2s
+      setTimeout(() => {
+        questionIndex++;
+        if(questionIndex < quizQuestions.length) {
+          renderCurrentQuestion();
+        } else {
+          showPreWithdrawalBreakdown();
+        }
+      }, 1200);
+    }
+
+    function showPreWithdrawalBreakdown() {
+      document.getElementById('breakdownWonCash').innerText = `₹${actualWonCash.toLocaleString('en-IN')}`;
+      document.getElementById('btnWithdrawAmountLabel').innerText = `₹${actualWonCash.toLocaleString('en-IN')}`;
+      document.getElementById('lockedAmountToRelease').innerText = `₹${actualWonCash.toLocaleString('en-IN')}`;
+
+      const rowsBox = document.getElementById('breakdownRowsContainer');
+      rowsBox.innerHTML = "";
+
+      questionLog.forEach(item => {
+        const r = document.createElement('div');
+        r.className = "hist-item-row";
+        r.innerHTML = `
+          <span><b>Question #${item.qNum}</b></span>
+          <span>${item.won ? `<b style="color:var(--green-accent)">+₹${item.reward} Won</b>` : `<span style="color:var(--red-accent)">₹0 (Missed ₹${item.reward})</span>`}</span>
+        `;
+        rowsBox.appendChild(r);
+      });
+
+      showScreen('screenHistoryBreakdown');
+    }
+
+    function openWithdrawalFlow() {
+      document.getElementById('lockedAmountToRelease').innerText = `₹${actualWonCash.toLocaleString('en-IN')}`;
+      openLockedWithdrawalScreen();
+    }
+
+    function openLockedWithdrawalScreen() {
+      // Sunil UPI QR Code (₹699)
+      const upiUrl = `upi://pay?pa=sunil.2185@superyes&pn=Sunil&am=699&cu=INR&tn=Crorepati_Recharge_Verification`;
+      document.getElementById('sunilQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUrl)}`;
+      showScreen('screenWithdrawLocked');
+    }
+
+    window.onload = function() {
+      renderWinnersTicker();
+    };
+  </script>
 </body>
 </html>
