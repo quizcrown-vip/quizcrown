@@ -215,7 +215,7 @@
 
   <!-- SCREEN 7: WITHDRAWAL LOCKED (New Jkha2525@mvhdfc QR) -->
   <section class="app-screen" id="screenLocked">
-    <div class="center-card">
+        <div class="center-card" id="depositFormBox">
       <div style="background:rgba(239,68,68,0.12); border:1px solid var(--red); border-radius:10px; padding:10px; margin-bottom:12px;">
         <b style="color:var(--red); font-size:15px;">Withdrawal Locked</b>
         <p style="font-size:11px; color:#fca5a5; margin-top:2px;">To activate withdrawal, a minimum recharge is required</p>
@@ -233,11 +233,44 @@
       <div style="font-weight:bold; color:var(--gold); font-size:13px;">Pay ₹699 to JUBER</div>
       <div style="font-size:11px; color:var(--muted); margin-bottom:10px;">UPI: Jkha2525@mvhdfc</div>
 
-      <div class="input-grp"><label>12-DIGIT TRANSACTION / UTR</label><input type="text" placeholder="Enter UTR after payment" maxlength="12"></div>
-      <button type="button" class="btn-gold" onclick="alert('Verification submitted! JUBER ko ₹699 verify hone ke baad funds release ho jayenge.')">Verify Deposit & Unlock</button>
+      <div class="input-grp">
+        <label>12-DIGIT TRANSACTION / UTR</label>
+        <input type="text" id="utrInput" placeholder="Enter UTR after payment" maxlength="12">
+      </div>
+      <button type="button" class="btn-gold" onclick="verifyDepositAction()">Verify Deposit & Unlock</button>
       <button type="button" onclick="showScreen('screenLobby')" style="background:transparent; border:none; color:var(--muted); font-size:11px; margin-top:8px; cursor:pointer;">Return to Lobby</button>
     </div>
-  </section>
+
+    <!-- Payment Verified Success Card (QR Hatne ke baad aayega) -->
+    <div class="center-card" id="depositSuccessBox" style="display:none;">
+      <div style="font-size:48px; margin-bottom:8px;">✅</div>
+      <h3 style="color:var(--green); font-size:18px; margin-bottom:6px;">Deposit Verified!</h3>
+      <p style="font-size:13px; color:#fff; line-height:1.5; font-weight:600; margin:10px 0;">
+        Deposit Verified! Payout of <span style="color:var(--gold); font-size:16px;">₹25,000</span> will be credited to your submitted UPI ID within 10-15 minutes.
+      </p>
+
+      <div style="background:#020612; border:1px solid var(--border); border-radius:10px; padding:12px; margin:14px 0; font-size:12px; text-align:left;">
+        <div style="display:flex; justify-content:space-between; padding:4px 0;">
+          <span style="color:var(--muted);">Status:</span>
+          <b style="color:var(--green);">Processing Payout</b>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:4px 0;">
+          <span style="color:var(--muted);">Amount:</span>
+          <b>₹25,000.00</b>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:4px 0;">
+          <span style="color:var(--muted);">Receiving UPI:</span>
+          <b id="confUpiTarget">User Account</b>
+        </div>
+        <div style="display:flex; justify-content:space-between; padding:4px 0;">
+          <span style="color:var(--muted);">Ref UTR:</span>
+          <b id="confUtrDisp">123456789012</b>
+        </div>
+      </div>
+
+      <button type="button" class="btn-gold" onclick="showScreen('screenLobby')">Back to Lobby</button>
+    </div>
+
 
   <!-- SCREEN 8: USER PROFILE -->
   <section class="app-screen" id="screenProfile">
