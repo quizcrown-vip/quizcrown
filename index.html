@@ -15,7 +15,7 @@
 
     .top-navbar { height: 60px; background: rgba(6,14,36,0.95); border-bottom: 1px solid var(--border); display: none; align-items: center; justify-content: space-between; padding: 0 14px; position: sticky; top: 0; z-index: 100; }
     .kbc-logo-svg { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); }
-    .lang-pill { background: #122452; border: 1px solid var(--border); border-radius: 14px; color: #fff; padding: 4px 8px; font-size: 11px; }
+    .lang-pill { background: #122452; border: 1px solid var(--border); border-radius: 14px; color: #fff; padding: 4px 8px; font-size: 11px; outline: none; }
 
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 58px; background: #060e24; border-top: 1px solid var(--border); display: none; justify-content: space-around; align-items: center; z-index: 100; }
     .b-item { display: flex; flex-direction: column; align-items: center; color: var(--muted); font-size: 10px; cursor: pointer; flex: 1; text-align: center; }
@@ -23,14 +23,12 @@
 
     .app-screen { display: none; width: 100%; }
     .app-screen.active { display: block !important; }
-    .center-card { max-width: 420px; margin: 24px auto; background: var(--navy-900); border: 1px solid var(--border); border-radius: 16px; padding: 20px; text-align: center; }
+    .center-card { max-width: 420px; margin: 20px auto; background: var(--navy-900); border: 1px solid var(--border); border-radius: 16px; padding: 20px; text-align: center; }
     .input-grp { text-align: left; margin-bottom: 12px; }
     .input-grp label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
     .input-grp input { width: 100%; padding: 12px; background: #020612; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 14px; outline: none; }
     .btn-gold { width: 100%; padding: 12px; background: linear-gradient(180deg, var(--gold-l), var(--gold)); color: #000; font-size: 14px; font-weight: 800; border: none; border-radius: 10px; cursor: pointer; }
 
-    .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 14px; }
-    .cat-box { background: #0c1838; border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center; }
     .opt-btn { width: 100%; text-align: left; padding: 12px 14px; margin-bottom: 8px; border-radius: 8px; background: #0c1838; border: 1px solid var(--border); color: #fff; font-size: 13px; cursor: pointer; }
     .opt-btn.correct { background: #065f46 !important; border-color: var(--green) !important; }
     .opt-btn.wrong { background: #881337 !important; border-color: var(--red) !important; }
@@ -44,6 +42,9 @@
     .prof-list { margin: 0 14px; background: #060e24; border: 1px solid var(--border); border-radius: 14px; }
     .prof-row { display: flex; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid rgba(43,86,179,0.25); font-size: 13px; color: #e2e8f0; cursor: pointer; }
     .winner-bar { background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.25); border-radius: 10px; margin: 10px 14px; padding: 8px 12px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .winner-scroll-box { max-height: 190px; overflow-y: auto; background: #020612; border: 1px solid var(--border); border-radius: 10px; padding: 4px 10px; }
+    .w-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #0d1a3d; font-size: 12px; }
+    .w-item:last-child { border-bottom: none; }
   </style>
 </head>
 <body>
@@ -54,25 +55,35 @@
       <svg class="kbc-logo-svg" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="48" fill="#1b0933" stroke="#f5a623" stroke-width="3"/>
         <circle cx="50" cy="50" r="41" fill="none" stroke="#2563eb" stroke-width="2"/>
+        <g stroke="#f5a623" stroke-width="1.2" opacity="0.6">
+          <line x1="50" y1="10" x2="50" y2="90"/><line x1="10" y1="50" x2="90" y2="50"/>
+          <line x1="22" y1="22" x2="78" y2="78"/><line x1="22" y1="78" x2="78" y2="22"/>
+        </g>
         <circle cx="50" cy="50" r="24" fill="#0f172a" stroke="#f5a623" stroke-width="2"/>
         <text x="50" y="44" fill="#ffd269" font-size="11" font-weight="900" text-anchor="middle">₹ ₹ ₹</text>
         <rect x="8" y="45" width="84" height="12" rx="3" fill="#090e24" stroke="#f5a623" stroke-width="1.5"/>
         <text x="50" y="54" fill="#ffffff" font-size="7.5" font-weight="900" text-anchor="middle" letter-spacing="1">CROREPATI</text>
       </svg>
-      <div><b style="color:var(--gold); font-size:14px;">कौन बनेगा करोड़पति</b><br><span style="font-size:8px; color:var(--muted);">VIP QUIZ</span></div>
+      <div><b style="color:var(--gold); font-size:14px;" class="i18n-kbc-title">कौन बनेगा करोड़पति</b><br><span style="font-size:8px; color:var(--muted);">VIP QUIZ</span></div>
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
-      <select class="lang-pill" id="siteLang" onchange="applyLang(this.value)"><option value="hi">🇮🇳 हिन्दी</option><option value="en">🌐 English</option></select>
+      <!-- Multi-Language Dropdown -->
+      <select class="lang-pill" id="siteLang" onchange="applyLang(this.value)">
+        <option value="hi">🇮🇳 हिन्दी</option>
+        <option value="en">🌐 English</option>
+        <option value="mr">🚩 मराठी</option>
+        <option value="gu">🦁 ગુજરાતી</option>
+      </select>
       <div style="font-size:11px;" onclick="showScreen('screenProfile')">👤 <span id="userTopPhone">Guest</span></div>
     </div>
   </header>
 
   <!-- Bottom Nav Bar -->
   <nav class="bottom-nav" id="mainBottomNav">
-    <div class="b-item active" id="tabHome" onclick="showScreen('screenLobby')">🏠<br><span>होम</span></div>
-    <div class="b-item" id="tabDeposit" onclick="showLockedWithdrawal()">📥<br><span>डिपॉजिट</span></div>
-    <div class="b-item" id="tabPlay" onclick="startQuiz()">🎮<br><span>क्विज</span></div>
-    <div class="b-item" id="tabMine" onclick="showScreen('screenProfile')">👤<br><span>माइन</span></div>
+    <div class="b-item active" id="tabHome" onclick="showScreen('screenLobby')">🏠<br><span class="i18n-home">होम</span></div>
+    <div class="b-item" id="tabDeposit" onclick="showLockedWithdrawal()">📥<br><span class="i18n-deposit">डिपॉजिट</span></div>
+    <div class="b-item" id="tabPlay" onclick="startQuiz()">🎮<br><span class="i18n-quiz">क्विज</span></div>
+    <div class="b-item" id="tabMine" onclick="showScreen('screenProfile')">👤<br><span class="i18n-mine">माइन</span></div>
   </nav>
 
   <!-- SCREEN 1: LOGIN -->
@@ -86,67 +97,61 @@
         <rect x="8" y="45" width="84" height="12" rx="3" fill="#090e24" stroke="#f5a623" stroke-width="1.5"/>
         <text x="50" y="54" fill="#ffffff" font-size="7.5" font-weight="900" text-anchor="middle" letter-spacing="1">CROREPATI</text>
       </svg>
-      <h2 style="color:var(--gold); margin-bottom:4px; font-size:19px;">कौन बनेगा करोड़पति</h2>
-      <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">अपना 10-अंकों का नंबर और 4-अंकों का पिन दर्ज करें</p>
-      <div class="input-grp"><label>मोबाइल नंबर</label><input type="tel" id="uMobile" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10"></div>
-      <div class="input-grp"><label>4-अंकों का गुप्त पिन</label><input type="password" id="uPin" placeholder="4 अंकों का पिन" maxlength="4"></div>
-      <button type="button" class="btn-gold" onclick="doLogin()">लॉगिन करें</button>
+      <h2 style="color:var(--gold); margin-bottom:4px; font-size:19px;" class="i18n-kbc-title">कौन बनेगा करोड़पति</h2>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:16px;" class="i18n-login-sub">अपना 10-अंकों का नंबर और 4-अंकों का पिन दर्ज करें</p>
+      <div class="input-grp"><label class="i18n-mob-label">मोबाइल नंबर</label><input type="tel" id="uMobile" placeholder="10 अंकों का मोबाइल नंबर" maxlength="10"></div>
+      <div class="input-grp"><label class="i18n-pin-label">4-अंकों का गुप्त पिन</label><input type="password" id="uPin" placeholder="4 अंकों का पिन" maxlength="4"></div>
+      <button type="button" class="btn-gold i18n-login-btn" onclick="doLogin()">लॉगिन करें</button>
     </div>
   </section>
 
   <!-- SCREEN 2: LANGUAGE -->
   <section class="app-screen" id="screenLang">
     <div class="center-card">
-      <h3 style="margin-bottom:8px;">Select Language</h3>
-      <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">अपनी पसंदीदा भाषा चुनें</p>
-      <button class="btn-gold" style="margin-bottom:10px;" onclick="applyLang('hi'); showScreen('screenLobby');">🇮🇳 हिन्दी (Hindi)</button>
-      <button class="btn-gold" onclick="applyLang('en'); showScreen('screenLobby');">🌐 English</button>
+      <h3 style="margin-bottom:8px;">Select Website Language</h3>
+      <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">अपनी पसंदीदा भाषा चुनें / Choose language</p>
+      <button class="btn-gold" style="margin-bottom:8px;" onclick="applyLang('hi'); showScreen('screenLobby');">🇮🇳 हिन्दी (Hindi)</button>
+      <button class="btn-gold" style="margin-bottom:8px;" onclick="applyLang('en'); showScreen('screenLobby');">🌐 English</button>
+      <button class="btn-gold" style="margin-bottom:8px;" onclick="applyLang('mr'); showScreen('screenLobby');">🚩 मराठी (Marathi)</button>
+      <button class="btn-gold" onclick="applyLang('gu'); showScreen('screenLobby');">🦁 ગુજરાતી (Gujarati)</button>
     </div>
   </section>
-  <!-- SCREEN 3: LOBBY -->
+  <!-- SCREEN 3: LOBBY (Clean Single GK Card + Live Winners Board) -->
   <section class="app-screen" id="screenLobby">
     <div class="winner-bar">
-      <span style="font-weight:bold; color:var(--gold);">🏆 LIVE WINNER:</span>
+      <span style="font-weight:bold; color:var(--gold);">🏆 LIVE:</span>
       <span id="winnerTickerText" style="color:#fff;">Rohit S. won ₹25,000 via UPI</span>
     </div>
 
     <div style="background: radial-gradient(circle, #1b4b9b, #071638); padding: 18px; border-radius: 14px; margin: 10px 14px; border: 1px solid var(--border);">
       <h3 id="lobbyHiText">वापसी पर स्वागत है!</h3>
-      <p style="font-size: 11px; color: #bdd2f2; margin-top: 2px;">क्या आज आप बनेंगे करोड़पति? खेलिए 20 प्रश्न!</p>
+      <p style="font-size: 11px; color: #bdd2f2; margin-top: 2px;" class="i18n-kbc-prompt">क्या आज आप बनेंगे करोड़पति? खेलिए 20 प्रश्न!</p>
     </div>
 
-    <div style="margin: 0 14px; font-weight: bold; font-size: 14px;">🎮 क्विज चुनें (Win up to ₹25,000)</div>
-    <div class="cat-grid">
-      <div class="cat-box">
-        <div style="font-size: 22px;">💡</div>
-        <b style="font-size: 13px;">General Knowledge</b>
-        <div style="font-size: 11px; color: var(--gold); margin: 4px 0;">₹ 25,000</div>
-        <button class="btn-gold" style="padding: 6px; font-size: 12px;" onclick="startQuiz()">अभी खेलें</button>
-      </div>
-      <div class="cat-box">
-        <div style="font-size: 22px;">🎬</div>
-        <b style="font-size: 13px;">Bollywood</b>
-        <div style="font-size: 11px; color: var(--gold); margin: 4px 0;">₹ 25,000</div>
-        <button class="btn-gold" style="padding: 6px; font-size: 12px;" onclick="startQuiz()">अभी खेलें</button>
-      </div>
-      <div class="cat-box">
-        <div style="font-size: 22px;">⚽</div>
-        <b style="font-size: 13px;">Sports</b>
-        <div style="font-size: 11px; color: var(--gold); margin: 4px 0;">₹ 25,000</div>
-        <button class="btn-gold" style="padding: 6px; font-size: 12px;" onclick="startQuiz()">अभी खेलें</button>
-      </div>
-      <div class="cat-box">
-        <div style="font-size: 22px;">⚛️</div>
-        <b style="font-size: 13px;">Science & Tech</b>
-        <div style="font-size: 11px; color: var(--gold); margin: 4px 0;">₹ 25,000</div>
-        <button class="btn-gold" style="padding: 6px; font-size: 12px;" onclick="startQuiz()">अभी खेलें</button>
+    <!-- Single Main Category: General Knowledge -->
+    <div style="margin: 0 14px 10px;">
+      <div style="background: linear-gradient(135deg, #102d6b, #071538); border: 2px solid var(--gold); border-radius: 14px; padding: 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.6);">
+        <div style="font-size: 32px; margin-bottom: 4px;">💡</div>
+        <h3 style="font-size: 17px; font-weight: 800; color: #fff;">General Knowledge</h3>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 2px;">20 Questions • ₹25,000 Jackpot</p>
+        <div style="font-size: 24px; font-weight: 900; color: var(--gold); margin: 6px 0;">₹ 25,000</div>
+        <button class="btn-gold" id="btnPlayLobby" style="padding: 10px;" onclick="startQuiz()">अभी खेलें (Play Now)</button>
       </div>
     </div>
 
-    <div style="margin: 14px; background: var(--navy-900); padding: 14px; border-radius: 12px; border: 1px solid var(--border);">
-      <div style="font-size: 12px; color: var(--muted);">वॉलेट बैलेंस</div>
+    <!-- Live Recent Winners Board -->
+    <div style="margin: 0 14px 12px; background: var(--navy-900); border: 1px solid var(--border); border-radius: 12px; padding: 12px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="font-size: 13px; font-weight: bold; color: var(--gold);">🏆 हालिया विजेता (Recent Winners)</span>
+        <span style="font-size: 10px; color: var(--green); font-weight: bold;">● Live Updating</span>
+      </div>
+      <div class="winner-scroll-box" id="recentWinnersList"></div>
+    </div>
+
+    <div style="margin: 0 14px 14px; background: var(--navy-900); padding: 14px; border-radius: 12px; border: 1px solid var(--border);">
+      <div style="font-size: 12px; color: var(--muted);" class="i18n-wallet-label">वॉलेट बैलेंस</div>
       <div style="font-size: 22px; font-weight: 900; margin: 4px 0 8px;" id="dispLobbyBal">₹ 0.00</div>
-      <button class="btn-gold" onclick="checkWithdrawalOrPlay()">पैसे निकालें (Withdraw)</button>
+      <button class="btn-gold i18n-withdraw-btn" onclick="checkWithdrawalOrPlay()">पैसे निकालें (Withdraw)</button>
     </div>
   </section>
 
@@ -167,10 +172,10 @@
   <section class="app-screen" id="screenBreakdown">
     <div class="center-card">
       <div style="font-size:32px;">🎉</div>
-      <h3 style="margin-top:4px;">क्विज राउंड पूरा हुआ!</h3>
+      <h3 style="margin-top:4px;" class="i18n-round-title">क्विज राउंड पूरा हुआ!</h3>
       <div style="font-size:26px; font-weight:900; color:var(--gold); margin:8px 0;" id="txtTotalWon">₹0</div>
       <div style="max-height:180px; overflow-y:auto; background:#020612; border:1px solid var(--border); border-radius:8px; margin:12px 0;" id="boxRows"></div>
-      <button class="btn-gold" onclick="showScreen('screenPayout')">पैसे निकालने के लिए आगे बढ़ें</button>
+      <button class="btn-gold i18n-proceed-w" onclick="showScreen('screenPayout')">पैसे निकालने के लिए आगे बढ़ें</button>
     </div>
   </section>
 
@@ -178,11 +183,11 @@
   <section class="app-screen" id="screenPayout">
     <div class="center-card">
       <div style="font-size:30px;">🏦</div>
-      <h3>भुगतान विवरण</h3>
-      <p style="font-size:11px; color:var(--muted); margin:4px 0 12px;">पैसे प्राप्त करने के लिए अपना खाता चुनें</p>
+      <h3 class="i18n-payout-title">भुगतान विवरण</h3>
+      <p style="font-size:11px; color:var(--muted); margin:4px 0 12px;" class="i18n-payout-sub">पैसे प्राप्त करने के लिए अपना खाता चुनें</p>
       
       <div style="background:#020612; border:1px solid var(--border); border-radius:8px; padding:8px 12px; margin-bottom:12px; display:flex; justify-content:space-between;">
-        <span style="font-size:12px; color:var(--muted);">निकासी राशि:</span>
+        <span style="font-size:12px; color:var(--muted);" class="i18n-w-amt">निकासी राशि:</span>
         <b style="color:var(--green); font-size:16px;" id="payoutValText">₹0.00</b>
       </div>
 
@@ -202,7 +207,7 @@
         <div class="input-grp"><label>HOLDER NAME</label><input type="text" id="inName" placeholder="Name as per Passbook"></div>
       </div>
 
-      <button type="button" class="btn-gold" onclick="confirmPayout()">विवरण की पुष्टि करें</button>
+      <button type="button" class="btn-gold i18n-confirm-details" onclick="confirmPayout()">विवरण की पुष्टि करें</button>
     </div>
   </section>
 
@@ -234,7 +239,7 @@
       <button type="button" onclick="showScreen('screenLobby')" style="background:transparent; border:none; color:var(--muted); font-size:11px; margin-top:8px; cursor:pointer;">Return to Lobby</button>
     </div>
 
-    <!-- Deposit Verified Dynamic Card (Correction 1 Fix) -->
+    <!-- Deposit Verified Dynamic Card -->
     <div class="center-card" id="depositSuccessBox" style="display:none;">
       <div style="font-size:48px; margin-bottom:8px;">✅</div>
       <h3 style="color:var(--green); font-size:18px; margin-bottom:6px;">Deposit Verified!</h3>
@@ -253,7 +258,7 @@
     </div>
   </section>
 
-  <!-- SCREEN 8: USER PROFILE (Correction 3 Fix: Full Options + Telegram) -->
+  <!-- SCREEN 8: USER PROFILE -->
   <section class="app-screen" id="screenProfile">
     <div class="prof-hero">
       <div style="display:flex; align-items:center; gap:12px;">
@@ -281,6 +286,7 @@
       <div class="prof-row" onclick="showScreen('screenPayout')"><span>🏛️ Bank & UPI Details</span><span>›</span></div>
       <div class="prof-row" onclick="window.open('https://t.me/QUIZCROWN', '_blank')"><span>✈️ Contact Us - Telegram (@QUIZCROWN)</span><span>›</span></div>
       <div class="prof-row" onclick="alert('Account settings verified.')"><span>🔒 Security & Password</span><span>›</span></div>
+      <div class="prof-row" style="color:var(--red);" onclick="location.reload()"><span>🚪 Logout (New Session)</span><span>›</span></div>
     </div>
   </section>
 
@@ -290,51 +296,249 @@
     var totalEarned = 0;
     var historyLogs = [];
     var userPhoneMasked = "78******85";
+    var isQuizLocked = false;
 
-    // Correction 2 Fix: Sum EXACTLY ₹25,000 (Math Verified)
+    // Strict ₹25,000 Sum Distribution across 20 Questions (Correction 2 Fix)
+    // 500*2 + 750*2 + 1000*3 + 1250*4 + 1500*4 + 1750*2 + 2000*3 = 25,000
     var rewardsList = [
       500,  500,  750,  750,  1000, 
       1000, 1000, 1250, 1250, 1250, 
       1250, 1500, 1500, 1500, 1500, 
       1750, 1750, 2000, 2000, 2000
-    ]; // 500*2 + 750*2 + 1000*3 + 1250*4 + 1500*4 + 1750*2 + 2000*3 = 25,000
+    ];
 
     var qList = [
-      { hi: "भारत की राजधानी कौन सी है?", en: "Capital of India?", opt: { hi: ["मुंबई","नई दिल्ली","कोलकाता","चेन्नई"], en: ["Mumbai","New Delhi","Kolkata","Chennai"] }, ans: 1 },
-      { hi: "सौरमंडल का सबसे बड़ा ग्रह?", en: "Largest planet in solar system?", opt: { hi: ["मंगल","बृहस्पति","शनि","पृथ्वी"], en: ["Mars","Jupiter","Saturn","Earth"] }, ans: 1 },
-      { hi: "कंप्यूटर का मस्तिष्क किसे कहा जाता है?", en: "Brain of computer?", opt: { hi: ["RAM","CPU","Hard Disk","Monitor"], en: ["RAM","CPU","Hard Disk","Monitor"] }, ans: 1 },
-      { hi: "2011 विश्व कप फाइनल भारत ने किसके खिलाफ जीता?", en: "India won 2011 World Cup against?", opt: { hi: ["ऑस्ट्रेलिया","पाकिस्तान","श्रीलंका","इंग्लैंड"], en: ["Australia","Pakistan","Sri Lanka","England"] }, ans: 2 },
-      { hi: "पानी का रासायनिक सूत्र क्या है?", en: "Chemical formula of water?", opt: { hi: ["CO2","H2O","O2","NaCl"], en: ["CO2","H2O","O2","NaCl"] }, ans: 1 },
-      { hi: "ताजमहल किस नदी के किनारे स्थित है?", en: "Taj Mahal is situated near which river?", opt: { hi: ["गंगा","यमुना","नर्मदा","गोदावरी"], en: ["Ganga","Yamuna","Narmada","Godavari"] }, ans: 1 },
-      { hi: "भारत का राष्ट्रीय पशु कौन सा है?", en: "National animal of India?", opt: { hi: ["शेर","बाघ","हाथी","चीता"], en: ["Lion","Tiger","Elephant","Cheetah"] }, ans: 1 },
-      { hi: "सूर्य के सबसे नजदीक ग्रह कौन सा है?", en: "Closest planet to Sun?", opt: { hi: ["बुध","शुक्र","मंगल","पृथ्वी"], en: ["Mercury","Venus","Mars","Earth"] }, ans: 0 },
-      { hi: "भारतीय संविधान के जनक?", en: "Father of Indian Constitution?", opt: { hi: ["महात्मा गांधी","डॉ. अम्बेडकर","नेहरू","पटेल"], en: ["Gandhi","Dr. Ambedkar","Nehru","Patel"] }, ans: 1 },
-      { hi: "UPI का पूरा नाम क्या है?", en: "Full form of UPI?", opt: { hi: ["Unified Payments Interface","Union Pay India","Universal Process","Unique Pay"], en: ["Unified Payments Interface","Union Pay India","Universal Process","Unique Pay"] }, ans: 0 },
-      { hi: "विश्व की सबसे ऊँची चोटी?", en: "Highest peak in the world?", opt: { hi: ["कंचनजंगा","माउंट एवरेस्ट","K2","नंदा देवी"], en: ["Kanchenjunga","Mount Everest","K2","Nanda Devi"] }, ans: 1 },
-      { hi: "ISRO का मुख्यालय कहाँ स्थित है?", en: "ISRO headquarters?", opt: { hi: ["मुंबई","बेंगलुरु","दिल्ली","हैदराबाद"], en: ["Mumbai","Bengaluru","Delhi","Hyderabad"] }, ans: 1 },
-      { hi: "मानव शरीर में कितनी हड्डियाँ होती हैं?", en: "Bones in adult human body?", opt: { hi: ["206","208","210","300"], en: ["206","208","210","300"] }, ans: 0 },
-      { hi: "भारत के 'मिसाइल मैन'?", en: "Missile Man of India?", opt: { hi: ["होमी भाभा","डॉ. एपीजे कलाम","साराभाई","सीवी रमन"], en: ["Homi Bhabha","Dr. APJ Kalam","Sarabhai","CV Raman"] }, ans: 1 },
-      { hi: "फेसबुक (Meta) के संस्थापक?", en: "Founder of Facebook?", opt: { hi: ["एलन मस्क","बिल गेट्स","मार्क जुकरबर्ग","स्टीव जॉब्स"], en: ["Elon Musk","Bill Gates","Mark Zuckerberg","Steve Jobs"] }, ans: 2 },
-      { hi: "क्षेत्रफल के अनुसार सबसे बड़ा राज्य?", en: "Largest Indian state by area?", opt: { hi: ["यूपी","महाराष्ट्र","राजस्थान","एमपी"], en: ["UP","Maharashtra","Rajasthan","MP"] }, ans: 2 },
-      { hi: "गूगल के वर्तमान CEO?", en: "CEO of Google?", opt: { hi: ["सत्य नडेला","सुंदर पिचाई","टिम कुक","पराग अग्रवाल"], en: ["Satya Nadella","Sundar Pichai","Tim Cook","Parag Agrawal"] }, ans: 1 },
-      { hi: "पहले भारतीय नोबेल पुरस्कार विजेता?", en: "First Indian Nobel winner?", opt: { hi: ["रवींद्रनाथ टैगोर","सीवी रमन","मदर टेरेसा","अमर्त्य सेन"], en: ["Rabindranath Tagore","CV Raman","Mother Teresa","Amartya Sen"] }, ans: 0 },
-      { hi: "विटामिन सी का सबसे अच्छा स्रोत?", en: "Richest source of Vitamin C?", opt: { hi: ["सेब","आंवला","केला","दूध"], en: ["Apple","Amla","Banana","Milk"] }, ans: 1 },
-      { hi: "2024 ओलंपिक कहाँ हुए थे?", en: "Where were 2024 Olympics held?", opt: { hi: ["टोक्यो","पेरिस","लंदन","लॉस एंजिल्स"], en: ["Tokyo","Paris","London","Los Angeles"] }, ans: 1 }
+      {
+        hi: "भारत की राजधानी कौन सी है?", en: "What is the capital of India?",
+        mr: "भारताची राजधानी कोणती आहे?", gu: "ભારતની રાજધાની કઈ છે?",
+        opt: {
+          hi: ["मुंबई","नई दिल्ली","कोलकाता","चेन्नई"],
+          en: ["Mumbai","New Delhi","Kolkata","Chennai"],
+          mr: ["मुंबई","नवी दिल्ली","कोलकाता","चेन्नई"],
+          gu: ["મુંબઈ","નવી દિલ્હી","કોલકાતા","ચેન્નાઈ"]
+        }, ans: 1
+      },
+      {
+        hi: "सौरमंडल का सबसे बड़ा ग्रह कौन सा है?", en: "Which is the largest planet in solar system?",
+        mr: "सूर्यमालेतील सर्वात मोठा ग्रह कोणता?", gu: "સૂર્યમંડળનો સૌથી મોટો ગ્રહ કયો છે?",
+        opt: {
+          hi: ["मंगल","बृहस्पति (Jupiter)","शनि","पृथ्वी"],
+          en: ["Mars","Jupiter","Saturn","Earth"],
+          mr: ["मंगळ","गुरु (Jupiter)","शनी","पृथ्वी"],
+          gu: ["મંગળ","ગુરુ (Jupiter)","શનિ","પૃથ્વી"]
+        }, ans: 1
+      },
+      {
+        hi: "कंप्यूटर का मस्तिष्क किसे कहा जाता है?", en: "What is known as the brain of the computer?",
+        mr: "संगणकाचा मेंदू कोणाला म्हणतात?", gu: "કમ્પ્યુટરનું મગજ કોને કહેવામાં આવે છે?",
+        opt: {
+          hi: ["RAM","CPU","Hard Disk","Monitor"],
+          en: ["RAM","CPU","Hard Disk","Monitor"],
+          mr: ["RAM","CPU","Hard Disk","Monitor"],
+          gu: ["RAM","CPU","Hard Disk","Monitor"]
+        }, ans: 1
+      },
+      {
+        hi: "2011 विश्व कप फाइनल भारत ने किसके खिलाफ जीता?", en: "Against whom India won the 2011 World Cup final?",
+        mr: "2011 विश्वचषक फायनल भारताने कोणाविरुद्ध जिंकली?", gu: "2011 વર્લ્ડ કપ ફાઇનલ ભારતે કોની સામે જીતી?",
+        opt: {
+          hi: ["ऑस्ट्रेलिया","पाकिस्तान","श्रीलंका","इंग्लैंड"],
+          en: ["Australia","Pakistan","Sri Lanka","England"],
+          mr: ["ऑस्ट्रेलिया","पाकिस्तान","श्रीलंका","इंग्लंड"],
+          gu: ["ઓસ્ટ્રેલિયા","પાકિસ્તાન","શ્રીલંકા","ઇંગ્લેન્ડ"]
+        }, ans: 2
+      },
+      {
+        hi: "पानी का रासायनिक सूत्र क्या है?", en: "What is the chemical formula of water?",
+        mr: "पाण्याचे रासायनिक सूत्र काय आहे?", gu: "પાણીનું રાસાયણિક સૂત્ર શું છે?",
+        opt: {
+          hi: ["CO2","H2O","O2","NaCl"],
+          en: ["CO2","H2O","O2","NaCl"],
+          mr: ["CO2","H2O","O2","NaCl"],
+          gu: ["CO2","H2O","O2","NaCl"]
+        }, ans: 1
+      },
+      {
+        hi: "ताजमहल किस नदी के किनारे स्थित है?", en: "Taj Mahal is on which river bank?",
+        mr: "ताजमहाल कोणत्या नदीच्या काठावर आहे?", gu: "તાજમહેલ કઈ નદીના કિનારે આવેલો છે?",
+        opt: {
+          hi: ["गंगा","यमुना","नर्मदा","गोदावरी"],
+          en: ["Ganga","Yamuna","Narmada","Godavari"],
+          mr: ["गंगा","यमुना","नर्मदा","गोदावरी"],
+          gu: ["ગંગા","યમુના","નર્મદા","ગોદાવરી"]
+        }, ans: 1
+      },
+      {
+        hi: "भारत का राष्ट्रीय पशु कौन सा है?", en: "What is the national animal of India?",
+        mr: "भारताचा राष्ट्रीय प्राणी कोणता?", gu: "ભારતનું રાષ્ટ્રીય પ્રાણી કયું છે?",
+        opt: {
+          hi: ["शेर","बाघ (Tiger)","हाथी","चीता"],
+          en: ["Lion","Tiger","Elephant","Cheetah"],
+          mr: ["सिंह","वाघ (Tiger)","हत्ती","चित્તા"],
+          gu: ["સિંહ","વાઘ (Tiger)","હાથી","ચિત્તો"]
+        }, ans: 1
+      },
+      {
+        hi: "सूर्य के सबसे नजदीक ग्रह कौन सा है?", en: "Which planet is closest to the Sun?",
+        mr: "सूर्याच्या सर्वात जवळचा ग्रह कोणता?", gu: "સૂર્યની સૌથી નજીકનો ગ્રહ કયો છે?",
+        opt: {
+          hi: ["बुध (Mercury)","शुक्र","मंगल","पृथ्वी"],
+          en: ["Mercury","Venus","Mars","Earth"],
+          mr: ["बुध (Mercury)","शुक्र","मंगळ","पृथ्वी"],
+          gu: ["બુધ (Mercury)","શુક્ર","મંગળ","પૃથ્વી"]
+        }, ans: 0
+      },
+      {
+        hi: "भारतीय संविधान के जनक के रूप में किसे जाना जाता है?", en: "Who is the Father of Indian Constitution?",
+        mr: "भारतीय राज्यघटनेचे जनक कोणाला मानले जाते?", gu: "ભારતીય બંધારણના પિતા કોણ છે?",
+        opt: {
+          hi: ["महात्मा गांधी","डॉ. बी. आर. अम्बेडकर","नेहरू","पटेल"],
+          en: ["Mahatma Gandhi","Dr. B.R. Ambedkar","Nehru","Patel"],
+          mr: ["महात्मा गांधी","डॉ. बी. आर. आंबेडकर","नेहरू","पटेल"],
+          gu: ["મહાત્મા ગાંધી","ડૉ. બી. આર. આંબેડકર","નેહરુ","પટેલ"]
+        }, ans: 1
+      },
+      {
+        hi: "UPI का पूरा नाम क्या है?", en: "What is the full form of UPI?",
+        mr: "UPI चा पूर्ण विस्तार काय आहे?", gu: "UPI નું પૂરું નામ શું છે?",
+        opt: {
+          hi: ["Unified Payments Interface","Union Pay India","Universal Process","Unique Pay"],
+          en: ["Unified Payments Interface","Union Pay India","Universal Process","Unique Pay"],
+          mr: ["Unified Payments Interface","Union Pay India","Universal Process","Unique Pay"],
+          gu: ["Unified Payments Interface","Union Pay India","Universal Process","Unique Pay"]
+        }, ans: 0
+      },
+      {
+        hi: "विश्व की सबसे ऊँची पर्वत चोटी कौन सी है?", en: "Highest mountain peak in the world?",
+        mr: "जगातील सर्वात उंच पर्वत शिखर कोणते?", gu: "વિશ્વનું સૌથી ઊંચું પર્વત શિખર કયું છે?",
+        opt: {
+          hi: ["कंचनजंगा","माउंट एवरेस्ट","K2","नंदा देवी"],
+          en: ["Kanchenjunga","Mount Everest","K2","Nanda Devi"],
+          mr: ["कांचनगंगा","माउंट एव्हरेस्ट","K2","नंदा देवी"],
+          gu: ["કંચનજંઘા","માઉન્ટ એવરેસ્ટ","K2","નંદા દેવી"]
+        }, ans: 1
+      },
+      {
+        hi: "ISRO का मुख्यालय कहाँ स्थित है?", en: "Where is ISRO headquarters located?",
+        mr: "इस्रोचे मुख्यालय कोठे आहे?", gu: "ISRO નું મુખ્ય મથક ક્યાં આવેલું છે?",
+        opt: {
+          hi: ["मुंबई","बेंगलुरु","नई दिल्ली","हैदराबाद"],
+          en: ["Mumbai","Bengaluru","New Delhi","Hyderabad"],
+          mr: ["मुंबई","बंगळूर","नवी दिल्ली","हैदराबाद"],
+          gu: ["મુંબઈ","બેંગલુરુ","નવી દિલ્હી","હૈદરાબાદ"]
+        }, ans: 1
+      },
+      {
+        hi: "वयस्क मानव शरीर में कुल कितनी हड्डियाँ होती हैं?", en: "How many bones in adult human body?",
+        mr: "प्रौढ मानवी शरीरात किती हाडे असतात?", gu: "પુખ્ત માનવ શરીરમાં કેટલા હાડકાં હોય છે?",
+        opt: {
+          hi: ["206","208","210","300"],
+          en: ["206","208","210","300"],
+          mr: ["206","208","210","300"],
+          gu: ["206","208","210","300"]
+        }, ans: 0
+      },
+      {
+        hi: "भारत के 'मिसाइल मैन' कौन हैं?", en: "Who is known as Missile Man of India?",
+        mr: "भारताचे 'मिसाईल मॅन' कोणाला म्हणतात?", gu: "ભારતના 'મિસાઇલ મેન' કોણ છે?",
+        opt: {
+          hi: ["डॉ. होमी भाभा","डॉ. एपीजे अब्दुल कलाम","विक्रम साराभाई","सीवी रमन"],
+          en: ["Dr. Homi Bhabha","Dr. APJ Abdul Kalam","Vikram Sarabhai","CV Raman"],
+          mr: ["डॉ. होमी भाभा","डॉ. एपीजे अब्दुल कलाम","विक्रम साराभाई","सीव्ही रमण"],
+          gu: ["ડૉ. હોમી ભાભા","ડૉ. એપીજે અબ્દુલ કલામ","વિક્રમ સારાભાઈ","સીવી રમન"]
+        }, ans: 1
+      },
+      {
+        hi: "फेसबुक (Meta) के मुख्य संस्थापक कौन हैं?", en: "Who is the primary founder of Facebook?",
+        mr: "फेसबुकचे (Meta) मुख्य संस्थापक कोण आहेत?", gu: "ફેસબુકના મુખ્ય સ્થાપક કોણ છે?",
+        opt: {
+          hi: ["एलन मस्क","बिल गेट्स","मार्क जुकरबर्ग","स्टीव जॉब्स"],
+          en: ["Elon Musk","Bill Gates","Mark Zuckerberg","Steve Jobs"],
+          mr: ["एलॉन मस्क","बिल गेट्स","मार्क झुकरबर्ग","स्टीव्ह जॉब्स"],
+          gu: ["એલોન મસ્ક","બિલ ગેટ્સ","માર્ક ઝકરબર્ગ","સ્ટીવ જોબ્સ"]
+        }, ans: 2
+      },
+      {
+        hi: "क्षेत्रफल के अनुसार भारत का सबसे बड़ा राज्य कौन सा है?", en: "Largest Indian state by area?",
+        mr: "क्षेत्रफळानुसार भारतातील सर्वात मोठे राज्य कोणते?", gu: "વિસ્તારની દ્રષ્ટિએ ભારતનું સૌથી મોટું રાજ્ય કયું છે?",
+        opt: {
+          hi: ["उत्तर प्रदेश","महाराष्ट्र","राजस्थान","मध्य प्रदेश"],
+          en: ["Uttar Pradesh","Maharashtra","Rajasthan","Madhya Pradesh"],
+          mr: ["उत्तर प्रदेश","महाराष्ट्र","राजस्थान","मध्य प्रदेश"],
+          gu: ["ઉત્તર પ્રદેશ","મહારાષ્ટ્ર","રાજસ્થાન","મધ્ય પ્રદેશ"]
+        }, ans: 2
+      },
+      {
+        hi: "गूगल के वर्तमान CEO कौन हैं?", en: "Who is the current CEO of Google?",
+        mr: "गुगलचे सध्याचे CEO कोण आहेत?", gu: "ગૂગલના વર્તમાન CEO કોણ છે?",
+        opt: {
+          hi: ["सत्य नडेला","सुंदर पिचाई","टिम कुक","पराग अग्रवाल"],
+          en: ["Satya Nadella","Sundar Pichai","Tim Cook","Parag Agrawal"],
+          mr: ["सत्य नडेला","सुंदर पिचाई","टिम कुक","पराग अग्रवाल"],
+          gu: ["સત્ય નડેલા","સુંદર પિચાઈ","ટિમ કુક","પરાગ અગ્રવાલ"]
+        }, ans: 1
+      },
+      {
+        hi: "नोबेल पुरस्कार जीतने वाले प्रथम भारतीय कौन थे?", en: "First Indian to win a Nobel Prize?",
+        mr: "नोबेल पारितोषिक मिळवणारे पहिले भारतीय कोण?", gu: "નોબેલ પુરસ્કાર જીતનાર પ્રથમ ભારતીય કોણ હતા?",
+        opt: {
+          hi: ["रवींद्रनाथ टैगोर","सीवी रमन","मदर टेरेसा","अमर्त्य सेन"],
+          en: ["Rabindranath Tagore","CV Raman","Mother Teresa","Amartya Sen"],
+          mr: ["रवींद्रनाथ टागोर","सीव्ही रमण","मदर तेरेसा","अमर्त्य सेन"],
+          gu: ["રવીન્દ્રનાથ ટાગોર","સીવી રમન","મધર ટેરેસા","અમર્ત્ય સેન"]
+        }, ans: 0
+      },
+      {
+        hi: "विटामिन सी का सबसे अच्छा स्रोत कौन सा है?", en: "Which is the richest source of Vitamin C?",
+        mr: "व्हिटॅमिन सी चा सर्वोत्तम स्रोत कोणता?", gu: "વિટામિન સી નો શ્રેષ્ઠ સ્ત્રોત કયો છે?",
+        opt: {
+          hi: ["सेब","आंवला","केला","दूध"],
+          en: ["Apple","Amla","Banana","Milk"],
+          mr: ["सफरचंद","आवळा","केळी","दूध"],
+          gu: ["સફરજન","આંબળા","કેળા","દૂધ"]
+        }, ans: 1
+      },
+      {
+        hi: "2024 ओलंपिक खेल कहाँ आयोजित हुए थे?", en: "Where were the 2024 Olympic Games held?",
+        mr: "2024 ऑलिम्पिक स्पर्धा कोठे आयोजित केल्या गेल्या?", gu: "2024 ઓલિમ્પિક રમતો ક્યાં યોજાઈ હતી?",
+        opt: {
+          hi: ["टोक्यो","पेरिस","लंदन","लॉस एंजिल्स"],
+          en: ["Tokyo","Paris","London","Los Angeles"],
+          mr: ["टोकियो","पॅरिस","लंडन","लॉस एंजेलिस"],
+          gu: ["ટોક્યો","પેરિસ","લંડન","લોસ એન્જલસ"]
+        }, ans: 1
+      }
     ];
 
-    var winnerPool = [
-      "Rohit S. (Mumbai) won ₹25,000 via UPI",
-      "Pooja V. (Delhi) won ₹24,250 via GPay",
-      "Amit K. (Patna) won ₹22,000 via PhonePe",
-      "Sneha P. (Surat) won ₹25,000 via Bank",
-      "Vikas D. (Nagpur) won ₹25,000 via Paytm"
+    var bigWinners = [
+      { name: "Rohit S. (Mumbai)", amt: "₹ 25,000", time: "Just now" },
+      { name: "Pooja V. (Delhi)", amt: "₹ 24,250", time: "2m ago" },
+      { name: "Amit K. (Patna)", amt: "₹ 22,000", time: "4m ago" },
+      { name: "Sneha P. (Surat)", amt: "₹ 25,000", time: "6m ago" },
+      { name: "Vikas D. (Nagpur)", amt: "₹ 23,250", time: "9m ago" },
+      { name: "Suresh S. (Raipur)", amt: "₹ 25,000", time: "12m ago" },
+      { name: "Deepak M. (Indore)", amt: "₹ 21,500", time: "15m ago" },
+      { name: "Ananya R. (Kolkata)", amt: "₹ 25,000", time: "18m ago" }
     ];
-    var winIdx = 0;
+
+    function renderWinnersBoard() {
+      var box = document.getElementById('recentWinnersList');
+      if (!box) return;
+      box.innerHTML = "";
+      bigWinners.forEach(function(w) {
+        var row = document.createElement('div');
+        row.className = "w-item";
+        row.innerHTML = "<div><b>" + w.name + "</b><div style='font-size:10px; color:var(--muted);'>" + w.time + "</div></div><b style='color:var(--gold-l); font-size:13px;'>" + w.amt + "</b>";
+        box.appendChild(row);
+      });
+      var topTicker = document.getElementById('winnerTickerText');
+      if (topTicker) topTicker.innerText = bigWinners[0].name + " won " + bigWinners[0].amt + " via UPI";
+    }
+
     setInterval(function() {
-      winIdx = (winIdx + 1) % winnerPool.length;
-      var el = document.getElementById('winnerTickerText');
-      if (el) el.innerText = winnerPool[winIdx];
-    }, 3500);
+      bigWinners.unshift(bigWinners.pop());
+      renderWinnersBoard();
+    }, 3200);
 
     function showScreen(id) {
       var s = document.querySelectorAll('.app-screen');
@@ -365,15 +569,85 @@
 
       document.getElementById('mainHeader').style.display = 'flex';
       document.getElementById('mainBottomNav').style.display = 'flex';
+      renderWinnersBoard();
       showScreen('screenLang');
     }
+
+    var langDict = {
+      hi: {
+        kbcTitle: "कौन बनेगा करोड़पति", kbcPrompt: "क्या आज आप बनेंगे करोड़पति? खेलिए 20 प्रश्न!",
+        home: "होम", deposit: "डिपॉजिट", quiz: "क्विज", mine: "माइन",
+        loginSub: "अपना 10-अंकों का नंबर और 4-अंकों का पिन दर्ज करें",
+        mobLabel: "मोबाइल नंबर", pinLabel: "4-अंकों का गुप्त पिन", loginBtn: "लॉगिन करें",
+        walletLabel: "वॉलेट बैलेंस", withdrawBtn: "पैसे निकालें (Withdraw)",
+        roundTitle: "क्विज राउंड पूरा हुआ!", proceedW: "पैसे निकालने के लिए आगे बढ़ें",
+        payoutTitle: "भुगतान विवरण", payoutSub: "पैसे प्राप्त करने के लिए अपना खाता चुनें",
+        wAmt: "निकासी राशि:", confirmDetails: "विवरण की पुष्टि करें"
+      },
+      en: {
+        kbcTitle: "Kaun Banega Crorepati", kbcPrompt: "Are you ready to win? Play 20 Questions Jackpot!",
+        home: "Home", deposit: "Deposit", quiz: "Quiz", mine: "Mine",
+        loginSub: "Enter 10-digit mobile number and 4-digit PIN",
+        mobLabel: "Mobile Number", pinLabel: "4-Digit PIN", loginBtn: "Login",
+        walletLabel: "Wallet Balance", withdrawBtn: "Withdraw",
+        roundTitle: "Quiz Round Completed!", proceedW: "Proceed to Withdraw",
+        payoutTitle: "Payout Details", payoutSub: "Enter account details to receive funds",
+        wAmt: "Withdrawal Amount:", confirmDetails: "Confirm Details"
+      },
+      mr: {
+        kbcTitle: "कोण बनेल करोडपती", kbcPrompt: "आज तुम्ही करोडपती होणार का? 20 प्रश्न खेळा!",
+        home: "होम", deposit: "डिपॉझिट", quiz: "क्विझ", mine: "माइन",
+        loginSub: "आपला 10-अंकी मोबाईल नंबर आणि पिन टाका",
+        mobLabel: "मोबाईल नंबर", pinLabel: "4-अंकी गुप्त पिन", loginBtn: "लॉगिन करा",
+        walletLabel: "वॉलेट बॅलन्स", withdrawBtn: "पैसे काढा (Withdraw)",
+        roundTitle: "क्विझ फेरी पूर्ण झाली!", proceedW: "पैसे काढण्यासाठी पुढे जा",
+        payoutTitle: "पेआउट तपशील", payoutSub: "पैसे मिळवण्यासाठी खाते निवडा",
+        wAmt: "निकासी रक्कम:", confirmDetails: "तपशीलाची पुष्टी करा"
+      },
+      gu: {
+        kbcTitle: "કોન બનેગા કરોડપતિ", kbcPrompt: "શું તમે આજે કરોડપતિ બનશો? 20 પ્રશ્નો રમો!",
+        home: "હોમ", deposit: "ડિપોઝિટ", quiz: "ક્વિઝ", mine: "માઇન",
+        loginSub: "તમારો 10-અંકનો મોબાઈલ નંબર અને પિન દાખલ કરો",
+        mobLabel: "મોબાઈલ નંબર", pinLabel: "4-અંકનો ગુપ્ત પિન", loginBtn: "લૉગિન કરો",
+        walletLabel: "વોલેટ બેલેન્સ", withdrawBtn: "પૈસા ઉપાડો (Withdraw)",
+        roundTitle: "ક્વિઝ રાઉન્ડ પૂર્ણ થયો!", proceedW: "પૈસા ઉપાડવા આગળ વધો",
+        payoutTitle: "ચૂકવણી વિગતો", payoutSub: "પૈસા મેળવવા માટે એકાઉન્ટ પસંદ કરો",
+        wAmt: "ઉપાડની રકમ:", confirmDetails: "વિગતોની પુષ્ટિ કરો"
+      }
+    };
 
     function applyLang(l) {
       curLang = l;
       document.getElementById('siteLang').value = l;
+      var d = langDict[l] || langDict.hi;
+
+      document.querySelectorAll('.i18n-kbc-title').forEach(function(e){ e.innerText = d.kbcTitle; });
+      document.querySelectorAll('.i18n-kbc-prompt').forEach(function(e){ e.innerText = d.kbcPrompt; });
+      document.querySelectorAll('.i18n-home').forEach(function(e){ e.innerText = d.home; });
+      document.querySelectorAll('.i18n-deposit').forEach(function(e){ e.innerText = d.deposit; });
+      document.querySelectorAll('.i18n-quiz').forEach(function(e){ e.innerText = d.quiz; });
+      document.querySelectorAll('.i18n-mine').forEach(function(e){ e.innerText = d.mine; });
+      document.querySelectorAll('.i18n-login-sub').forEach(function(e){ e.innerText = d.loginSub; });
+      document.querySelectorAll('.i18n-mob-label').forEach(function(e){ e.innerText = d.mobLabel; });
+      document.querySelectorAll('.i18n-pin-label').forEach(function(e){ e.innerText = d.pinLabel; });
+      document.querySelectorAll('.i18n-login-btn').forEach(function(e){ e.innerText = d.loginBtn; });
+      document.querySelectorAll('.i18n-wallet-label').forEach(function(e){ e.innerText = d.walletLabel; });
+      document.querySelectorAll('.i18n-withdraw-btn').forEach(function(e){ e.innerText = d.withdrawBtn; });
+      document.querySelectorAll('.i18n-round-title').forEach(function(e){ e.innerText = d.roundTitle; });
+      document.querySelectorAll('.i18n-proceed-w').forEach(function(e){ e.innerText = d.proceedW; });
+      document.querySelectorAll('.i18n-payout-title').forEach(function(e){ e.innerText = d.payoutTitle; });
+      document.querySelectorAll('.i18n-payout-sub').forEach(function(e){ e.innerText = d.payoutSub; });
+      document.querySelectorAll('.i18n-w-amt').forEach(function(e){ e.innerText = d.wAmt; });
+      document.querySelectorAll('.i18n-confirm-details').forEach(function(e){ e.innerText = d.confirmDetails; });
     }
 
     function startQuiz() {
+      // Correction 4: Check if Session is already completed/locked
+      if(isQuizLocked) {
+        alert("Aapka quiz round complete ho chuka hai! Dobara khelne ke liye Profile mein jakar Logout karke naya session start karein.");
+        showScreen('screenBreakdown');
+        return;
+      }
       qIndex = 0;
       totalEarned = 0;
       historyLogs = [];
@@ -384,14 +658,17 @@
     function renderQ() {
       var q = qList[qIndex];
       var r = rewardsList[qIndex];
+      var langKey = (q[curLang]) ? curLang : 'hi';
+
       document.getElementById('qIndexText').innerText = "QUESTION " + (qIndex + 1) + " OF 20";
       document.getElementById('qPrizeText').innerText = "Prize: +₹" + r;
-      document.getElementById('qPrompt').innerText = q[curLang];
+      document.getElementById('qPrompt').innerText = q[langKey];
       document.getElementById('qAlert').innerText = "";
 
       var box = document.getElementById('qChoices');
       box.innerHTML = "";
-      q.opt[curLang].forEach(function(ch, idx) {
+      var opts = (q.opt[langKey]) ? q.opt[langKey] : q.opt.hi;
+      opts.forEach(function(ch, idx) {
         var b = document.createElement('button');
         b.className = "opt-btn";
         b.innerText = String.fromCharCode(65 + idx) + ". " + ch;
@@ -472,10 +749,17 @@
     }
 
     function showLockedWithdrawal() {
+      // Correction 4: Lock the quiz once user reaches payment/QR
+      isQuizLocked = true;
+      var btn = document.getElementById('btnPlayLobby');
+      if (btn) {
+        btn.innerText = "Round Completed (Locked)";
+        btn.style.opacity = "0.7";
+      }
+
       var upi = "upi://pay?ver=01&pa=Jkha2525@mvhdfc&pn=JUBER&mc=0000&cu=INR&am=699&mode=01&purpose=00&qrmedium=02&tn=Crorepati_Activation";
       document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(upi);
       
-      // Reset views
       document.getElementById('depositFormBox').style.display = 'block';
       document.getElementById('depositSuccessBox').style.display = 'none';
       showScreen('screenLocked');
@@ -493,12 +777,11 @@
         submittedUpi = userPhoneMasked + "@upi";
       }
 
-      // Correction 1: Exactly whatever is won is displayed dynamically
-      var displayWon = "₹" + totalEarned.toLocaleString('en-IN');
-      document.getElementById('dynWonAmtText').innerText = displayWon;
-      document.getElementById('confWonDisplay').innerText = displayWon;
+      // Correction 1: Exact dynamic amount display
+      var dynamicWonText = "₹" + totalEarned.toLocaleString('en-IN');
+      document.getElementById('dynWonAmtText').innerText = dynamicWonText;
+      document.getElementById('confWonDisplay').innerText = dynamicWonText;
 
-      // Hide QR, Show verified card
       document.getElementById('depositFormBox').style.display = 'none';
       document.getElementById('depositSuccessBox').style.display = 'block';
       document.getElementById('confUpiTarget').innerText = submittedUpi;
