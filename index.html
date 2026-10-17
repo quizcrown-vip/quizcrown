@@ -442,6 +442,25 @@
       document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(upi);
       showScreen('screenLocked');
     }
+        function verifyDepositAction() {
+      var utr = document.getElementById('utrInput').value.trim();
+      if(utr.length !== 12) {
+        alert("Kripya 12-digit valid UTR / Transaction ID enter karein.");
+        return;
+      }
+
+      var submittedUpi = document.getElementById('inUpi').value.trim();
+      if(!submittedUpi) {
+        submittedUpi = userPhoneMasked + "@upi";
+      }
+
+      // Hide QR & Form, Show Success Message
+      document.getElementById('depositFormBox').style.display = 'none';
+      document.getElementById('depositSuccessBox').style.display = 'block';
+      document.getElementById('confUpiTarget').innerText = submittedUpi;
+      document.getElementById('confUtrDisp').innerText = utr;
+    }
+
   </script>
 </body>
 </html>
