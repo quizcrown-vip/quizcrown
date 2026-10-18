@@ -717,6 +717,7 @@
       if(userPick === correctPick) {
         btn.classList.add('correct');
         totalEarned += r;
+                if(totalEarned > 25000) totalEarned = 25000;
         document.getElementById('qAlert').innerHTML = '<span style="color:var(--green)">✓ सही जवाब! +₹' + r + '</span>';
         historyLogs.push({ num: qIndex + 1, won: true, amt: r });
       } else {
@@ -735,14 +736,18 @@
           renderQ();
         } else {
           showBreakdown();
+   
+
         }
       }, 1200);
     }
 
-    function showBreakdown() {
+        function showBreakdown() {
+      if(totalEarned > 25000) totalEarned = 25000;
       document.getElementById('txtTotalWon').innerText = "₹" + totalEarned.toLocaleString('en-IN');
       document.getElementById('payoutValText').innerText = "₹" + totalEarned.toLocaleString('en-IN');
       document.getElementById('lockedAmtDisplay').innerText = "₹" + totalEarned.toLocaleString('en-IN');
+
 
       var box = document.getElementById('boxRows');
       box.innerHTML = "";
