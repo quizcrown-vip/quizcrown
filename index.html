@@ -243,8 +243,9 @@
       <div style="background:#fff; padding:6px; border-radius:10px; display:inline-block; margin-bottom:6px;">
         <img id="qrImg" src="" alt="UPI QR" style="width:150px; height:150px; display:block;">
       </div>
-      <div style="font-weight:bold; color:var(--gold); font-size:13px;">Pay ₹699 to JUBER</div>
-      <div style="font-size:11px; color:var(--muted); margin-bottom:10px;">UPI: Jkha2525@mvhdfc</div>
+           <div style="font-weight:bold; color:var(--gold); font-size:13px;">Pay ₹699 to Sunil</div>
+      <div style="font-size:11px; color:var(--muted); margin-bottom:10px;">UPI: sunil.2185@superyes</div>
+
 
       <div class="input-grp"><label>12-DIGIT TRANSACTION / UTR</label><input type="text" id="utrInput" placeholder="Enter UTR after payment" maxlength="12"></div>
       <button type="button" class="btn-gold" onclick="verifyDepositAction()">Verify Deposit & Unlock</button>
@@ -806,7 +807,8 @@
         };
       }
 
-      var upi = "upi://pay?ver=01&pa=Jkha2525@mvhdfc&pn=JUBER&mc=0000&cu=INR&am=699&mode=01&purpose=00&qrmedium=02&tn=Crorepati_Activation";
+           var upi = "upi://pay?pa=sunil.2185@superyes&pn=Sunil&am=699&cu=INR&tn=Crorepati_Activation";
+
       document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(upi);
       
       document.getElementById('depositFormBox').style.display = 'block';
